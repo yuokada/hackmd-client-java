@@ -63,3 +63,38 @@ class MyService {
 
 - Endpoint mapping in this skeleton targets common v1 endpoints (e.g. `GET /v1/notes`).
 - Extend DTOs and add error mapping (e.g. map 404 to `Optional.empty()`) as needed.
+
+## WireMock Recording Steps
+
+You can generate WireMock stubs directly from the real HackMD API by using the Quarkus WireMock Dev Service. The workflow below follows the official documentation (<https://docs.quarkiverse.io/quarkus-wiremock/dev/index.html>).
+
+1. **Start the WireMock Dev Service**
+   - When you run `./mvnw quarkus:dev` or `./mvnw test` with the `quarkus-wiremock` dependency on the classpath, WireMock starts automatically.
+   - Note the value of `quarkus.wiremock.devservices.port` (random if unspecified) and reuse that port for the HTTP calls below. You may also fix the port in `application.properties`.
+
+2. **Begin a recording session**
+   - Trigger the WireMock Admin API to start recording. Targeting the real HackMD API would look like this:
+     ```bash
+     curl -X POST "http://localhost:${WIREMOCK_PORT}/__admin/recordings/start" \
+       -H 'Content-Type: application/json' \
+       -d '{
+         "targetBaseUrl": "https://api.hackmd.io",
+         "captureHeaders": {"Authorization": {"caseInsensitive": true}, "User-Agent": {"caseInsensitive": true}}
+       }'
+     ```
+   - Set `targetBaseUrl` to the real service you want to record and optionally list headers under `captureHeaders` that should be persisted.
+
+3. **Send real requests via the client**
+   - Invoke `hackmdClient` (or run the relevant tests) as usual. WireMock proxies the requests to HackMD, capturing the responses and matchers on the fly.
+
+4. **Stop the session and extract stubs**
+   - Stop recording:
+     ```bash
+     curl -X POST "http://localhost:${WIREMOCK_PORT}/__admin/recordings/stop"
+     ```
+   - The returned JSON lists every generated stub. Save the needed ones under `src/test/resources/mappings` and `__files`, which Quarkus WireMock reads by default.
+
+5. **Run tests with the saved stubs**
+   - With `quarkus.wiremock.devservices.files-mapping=src/test/resources` (default), you can simply run `./mvnw test` and WireMock will return the recorded responses.
+
+See the WireMock record/playback reference (<https://wiremock.org/docs/record-playback/>) for more details and advanced options.
