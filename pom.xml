@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.yuokada</groupId>
@@ -26,6 +24,9 @@
     <quarkus.platform.version>3.20.0</quarkus.platform.version>
 
     <jackson.version>2.17.2</jackson.version>
+
+    <spotless.version>3.1.0</spotless.version>
+    <google-java-format.version>1.17.0</google-java-format.version>
 
     <maven.surefire.plugin.version>3.3.1</maven.surefire.plugin.version>
     <maven.failsafe.plugin.version>3.3.1</maven.failsafe.plugin.version>
@@ -62,6 +63,29 @@
           </configuration>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.6.2</version>
+          <executions>
+            <execution>
+              <id>enforce-build-prerequisites</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <version>3.9</version>
+                  </requireMavenVersion>
+                  <requireJavaVersion>
+                    <version>${maven.compiler.release}</version>
+                  </requireJavaVersion>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven.surefire.plugin.version}</version>
         </plugin>
@@ -71,5 +95,41 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.version}</version>
+        <configuration>
+          <java>
+            <googleJavaFormat>
+              <version>${google-java-format.version}</version>
+            </googleJavaFormat>
+            <includes>
+              <include>hackmd-client-core/src/**/*.java</include>
+              <include>hackmd-client-quarkus/src/**/*.java</include>
+            </includes>
+            <excludes>
+              <exclude>**/target/**</exclude>
+            </excludes>
+          </java>
+          <pom>
+            <includes>
+              <include>pom.xml</include>
+              <include>hackmd-client-core/pom.xml</include>
+              <include>hackmd-client-quarkus/pom.xml</include>
+            </includes>
+            <sortPom/>
+          </pom>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>
