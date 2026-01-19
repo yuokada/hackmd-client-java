@@ -1,0 +1,77 @@
+[
+  {
+    "id": "demo-note-001",
+    "title": "Sample onboarding checklist",
+    "tags": ["sample", "onboarding"],
+    "createdAt": 1700000000000,
+    "titleUpdatedAt": 1700100000000,
+    "tagsUpdatedAt": 1700200000000,
+    "publishType": "view",
+    "publishedAt": null,
+    "permalink": null,
+    "publishLink": "https://example.com/notes/onboarding",
+    "shortId": "demoOnboarding",
+    "content": "",
+    "lastChangedAt": 1700300000000,
+    "lastChangeUser": {
+      "name": "Demo Author",
+      "userPath": "demo-user",
+      "photo": "https://example.com/avatar.png",
+      "biography": null
+    },
+    "userPath": "demo-user",
+    "teamPath": null,
+    "readPermission": "guest",
+    "writePermission": "signed_in"
+  },
+  {
+    "id": "demo-note-002",
+    "title": "Release checklist",
+    "tags": ["release", "ops"],
+    "createdAt": 1701000000000,
+    "titleUpdatedAt": 1701100000000,
+    "tagsUpdatedAt": 1701200000000,
+    "publishType": "view",
+    "publishedAt": null,
+    "permalink": null,
+    "publishLink": "https://example.com/notes/release",
+    "shortId": "demoRelease",
+    "content": "",
+    "lastChangedAt": 1701300000000,
+    "lastChangeUser": {
+      "name": "Demo Author",
+      "userPath": "demo-user",
+      "photo": "https://example.com/avatar.png",
+      "biography": null
+    },
+    "userPath": "demo-user",
+    "teamPath": null,
+    "readPermission": "guest",
+    "writePermission": "signed_in"
+  },
+  {
+    "id": "demo-note-003",
+    "title": "Incident response plan",
+    "tags": ["infra", "playbook"],
+    "createdAt": 1702000000000,
+    "titleUpdatedAt": 1702100000000,
+    "tagsUpdatedAt": 1702200000000,
+    "publishType": "view",
+    "publishedAt": null,
+    "permalink": null,
+    "publishLink": "https://example.com/notes/incident",
+    "shortId": "demoIncident",
+    "content": "",
+    "lastChangedAt": 1702300000000,
+    "lastChangeUser": {
+      "name": "Demo Author",
+      "userPath": "demo-user",
+      "photo": "https://example.com/avatar.png",
+      "biography": null
+    },
+    "userPath": "demo-user",
+    "teamPath": null,
+    "readPermission": "guest",
+    "writePermission": "signed_in"
+  }
+]
