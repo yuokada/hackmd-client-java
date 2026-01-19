@@ -104,9 +104,6 @@
         <version>${spotless.version}</version>
         <configuration>
           <java>
-            <googleJavaFormat>
-              <version>${google-java-format.version}</version>
-            </googleJavaFormat>
             <includes>
               <include>hackmd-client-core/src/**/*.java</include>
               <include>hackmd-client-quarkus/src/**/*.java</include>
@@ -114,6 +111,15 @@
             <excludes>
               <exclude>**/target/**</exclude>
             </excludes>
+
+            <googleJavaFormat>
+              <version>${google-java-format.version}</version>
+            </googleJavaFormat>
+            <importOrder>
+              <semanticSort>true</semanticSort>
+            </importOrder>
+            <removeUnusedImports/>
+            <forbidWildcardImports/>
           </java>
           <pom>
             <includes>
