@@ -1,0 +1,28 @@
+{
+  "id": "demo-note-001",
+  "title": "Sample onboarding checklist",
+  "tags": [
+    "sample",
+    "onboarding"
+  ],
+  "createdAt": 1700000000000,
+  "titleUpdatedAt": 1700100000000,
+  "tagsUpdatedAt": 1700200000000,
+  "publishType": "view",
+  "publishedAt": null,
+  "permalink": null,
+  "publishLink": "https://example.com/notes/onboarding",
+  "shortId": "demoOnboarding",
+  "content": "",
+  "lastChangedAt": 1700300000000,
+  "lastChangeUser": {
+    "name": "Demo Author",
+    "userPath": "demo-user",
+    "photo": "https://example.com/avatar.png",
+    "biography": null
+  },
+  "userPath": "demo-user",
+  "teamPath": null,
+  "readPermission": "guest",
+  "writePermission": "signed_in"
+}

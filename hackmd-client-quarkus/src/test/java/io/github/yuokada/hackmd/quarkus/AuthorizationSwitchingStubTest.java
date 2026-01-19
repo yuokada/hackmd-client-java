@@ -23,7 +23,6 @@ public class AuthorizationSwitchingStubTest {
 
   WireMock wiremock;
 
-  // Before method to initialize wiremock
   @BeforeEach
   public void beforeEach() {
     // wiremock = new WireMock("localhost", 8080); // Adjust host and port as necessary

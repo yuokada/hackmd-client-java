@@ -23,6 +23,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 @Path("/v1")
 @RegisterRestClient(configKey = "hackmd")
 @RegisterProvider(HackmdBearerAuthFilter.class)
+@RegisterProvider(HackmdErrorResponseMapper.class)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public interface HackmdRestClient {
