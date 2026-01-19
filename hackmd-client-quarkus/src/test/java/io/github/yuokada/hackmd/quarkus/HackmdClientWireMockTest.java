@@ -59,6 +59,17 @@ class HackmdClientWireMockTest {
             .withHeader("Authorization", equalTo("Bearer test-token"))
             .atPriority(10)
             .willReturn(aResponse().withStatus(404)));
+
+    /*
+     * Teams API stubs can be added here similarly
+     */
+      wiremock.register(
+          get(urlEqualTo("/v1/teams/"))
+              .withHeader("Authorization", equalTo("Bearer test-token"))
+              .willReturn(aResponse()
+                  .withStatus(200)
+                  .withBodyFile("teams_list_ok.json")
+              ));
   }
 
   @Test
@@ -105,5 +116,13 @@ class HackmdClientWireMockTest {
         getRequestedFor(urlEqualTo("/v1/notes/note-not-found"))
             .withHeader("Authorization", equalTo("Bearer test-token"))
             .withHeader("User-Agent", equalTo("hackmd-client-tests")));
+  }
+
+  // Teams API test example
+  @Test
+  @DisplayName("lists teams via WireMock stub")
+  void listTeams_is_stubbed_via_wiremock() {
+      // hackmdClient
+      // TODO: implement listTeams() method in HackmdClient
   }
 }
