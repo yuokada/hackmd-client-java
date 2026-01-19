@@ -17,6 +17,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
@@ -61,7 +62,8 @@ class HackmdClientWireMockTest {
   }
 
   @Test
-  void listNotesUsesRecordedWireMockStub() {
+  @DisplayName("lists notes via WireMock stub")
+  void listNotes_is_stubbed_via_wiremock() {
     var notes = hackmdClient.listNotes();
 
     assertFalse(notes.isEmpty());
@@ -77,6 +79,7 @@ class HackmdClientWireMockTest {
   }
 
   @Test
+  @DisplayName("fetches note details via WireMock")
   void getNotesUsesRecordedWireMockStub() {
     var note = hackmdClient.getNote("demo-note-001");
 
@@ -93,6 +96,7 @@ class HackmdClientWireMockTest {
   }
 
   @Test
+  @DisplayName("missing note results in Optional.empty()")
   void getNotFoundNoteUsesRecordedWireMockStub() {
     var note = hackmdClient.getNote("note-not-found");
     assertTrue(note.isEmpty());
