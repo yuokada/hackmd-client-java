@@ -13,6 +13,7 @@
   <modules>
     <module>hackmd-client-core</module>
     <module>hackmd-client-quarkus</module>
+    <module>hackmd-client-example</module>
   </modules>
 
   <properties>
@@ -107,6 +108,7 @@
             <includes>
               <include>hackmd-client-core/src/**/*.java</include>
               <include>hackmd-client-quarkus/src/**/*.java</include>
+              <include>hackmd-client-example/src/**/*.java</include>
             </includes>
             <excludes>
               <exclude>**/target/**</exclude>
