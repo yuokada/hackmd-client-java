@@ -11,6 +11,7 @@ This is a Maven multi-module skeleton for providing a **transport-agnostic core*
 - `hackmd-client-quarkus`
   - Quarkus 3.20 implementation using `quarkus-rest-client-jackson`.
   - Adds a `ClientRequestFilter` that injects `Authorization: Bearer ...`.
+  - Ships with `META-INF/beans.xml` so the produced `HackmdClient` bean can be discovered when this module is used as a CDI dependency in other Quarkus applications.
 
 ## Build
 
