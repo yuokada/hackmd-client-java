@@ -1,9 +1,11 @@
 package io.github.yuokada.hackmd.quarkus;
 
-import io.github.yuokada.hackmd.core.HackmdException;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
+
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
+
+import io.github.yuokada.hackmd.core.HackmdException;
 
 /** Maps non-successful HackMD responses into {@link HackmdException}. */
 public class HackmdErrorResponseMapper implements ResponseExceptionMapper<HackmdException> {

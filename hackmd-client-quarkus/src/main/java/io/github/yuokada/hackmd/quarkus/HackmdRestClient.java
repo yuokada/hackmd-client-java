@@ -1,11 +1,6 @@
 package io.github.yuokada.hackmd.quarkus;
 
-import io.github.yuokada.hackmd.core.CreateNoteRequest;
-import io.github.yuokada.hackmd.core.Note;
-import io.github.yuokada.hackmd.core.NoteSummary;
-import io.github.yuokada.hackmd.core.Team;
-import io.github.yuokada.hackmd.core.UpdateNoteRequest;
-import io.github.yuokada.hackmd.core.UserProfile;
+import java.util.List;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -16,9 +11,16 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import java.util.List;
+
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+
+import io.github.yuokada.hackmd.core.CreateNoteRequest;
+import io.github.yuokada.hackmd.core.Note;
+import io.github.yuokada.hackmd.core.NoteSummary;
+import io.github.yuokada.hackmd.core.Team;
+import io.github.yuokada.hackmd.core.UpdateNoteRequest;
+import io.github.yuokada.hackmd.core.UserProfile;
 
 /**
  * Low-level REST client mapping to HackMD endpoints.

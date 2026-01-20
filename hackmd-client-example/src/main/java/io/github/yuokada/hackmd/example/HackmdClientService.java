@@ -1,16 +1,18 @@
 package io.github.yuokada.hackmd.example;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
+import picocli.CommandLine.Command;
+
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
 import io.github.yuokada.hackmd.core.Note;
 import io.github.yuokada.hackmd.core.NoteSummary;
 import io.github.yuokada.hackmd.core.UpdateNoteRequest;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import picocli.CommandLine.Command;
 
 @ApplicationScoped
 @Command(name = "hackmd-client", mixinStandardHelpOptions = true)

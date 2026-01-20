@@ -1,5 +1,8 @@
 package io.github.yuokada.hackmd.quarkus;
 
+import java.util.List;
+import java.util.Optional;
+
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
 import io.github.yuokada.hackmd.core.Note;
@@ -7,8 +10,6 @@ import io.github.yuokada.hackmd.core.NoteSummary;
 import io.github.yuokada.hackmd.core.Team;
 import io.github.yuokada.hackmd.core.UpdateNoteRequest;
 import io.github.yuokada.hackmd.core.UserProfile;
-import java.util.List;
-import java.util.Optional;
 
 public class HackmdClientImpl implements HackmdClient {
 

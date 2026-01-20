@@ -1,19 +1,21 @@
 package io.github.yuokada.hackmd.quarkus;
 
+import jakarta.inject.Inject;
+
+import com.github.tomakehurst.wiremock.client.WireMock;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import io.quarkiverse.wiremock.devservice.ConnectWireMock;
+import io.quarkus.test.junit.QuarkusTest;
+
+import io.github.yuokada.hackmd.core.HackmdClient;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.wildfly.common.Assert.assertTrue;
-
-import com.github.tomakehurst.wiremock.client.WireMock;
-import io.github.yuokada.hackmd.core.HackmdClient;
-import io.quarkiverse.wiremock.devservice.ConnectWireMock;
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 @ConnectWireMock
