@@ -15,4 +15,24 @@ public interface HackmdClient {
   Optional<Note> getNote(String noteId);
 
   Note createNote(CreateNoteRequest request);
+
+  Note updateNote(String noteId, UpdateNoteRequest request);
+
+  void deleteNote(String noteId);
+
+  List<Team> listTeams();
+
+  List<NoteSummary> listTeamNotes(String teamPath);
+
+  Note createTeamNote(String teamPath, CreateNoteRequest request);
+
+  Optional<Note> getTeamNote(String teamPath, String noteId);
+
+  Note updateTeamNote(String teamPath, String noteId, UpdateNoteRequest request);
+
+  void deleteTeamNote(String teamPath, String noteId);
+
+  UserProfile getCurrentUser();
+
+  List<NoteSummary> getHistory(Integer limit);
 }

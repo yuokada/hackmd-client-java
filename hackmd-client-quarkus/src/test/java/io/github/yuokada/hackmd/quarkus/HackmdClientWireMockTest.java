@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import io.github.yuokada.hackmd.core.HackmdClient;
+import io.github.yuokada.hackmd.core.Team;
 import io.quarkiverse.wiremock.devservice.ConnectWireMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -63,13 +64,14 @@ class HackmdClientWireMockTest {
     /*
      * Teams API stubs can be added here similarly
      */
-      wiremock.register(
-          get(urlEqualTo("/v1/teams/"))
-              .withHeader("Authorization", equalTo("Bearer test-token"))
-              .willReturn(aResponse()
-                  .withStatus(200)
-                  .withBodyFile("teams_list_ok.json")
-              ));
+    wiremock.register(
+        get(urlEqualTo("/v1/teams"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBodyFile("teams_list_ok.json")));
   }
 
   @Test
@@ -122,7 +124,11 @@ class HackmdClientWireMockTest {
   @Test
   @DisplayName("lists teams via WireMock stub")
   void listTeams_is_stubbed_via_wiremock() {
-      // hackmdClient
-      // TODO: implement listTeams() method in HackmdClient
+    List<Team> teams = hackmdClient.listTeams();
+    assertFalse(teams.isEmpty());
+
+    var firstTeam = teams.get(0);
+    assertEquals("e9ed1dcd-830f-435c-9fe2-d53d5f191666", firstTeam.id());
+    // TODO: implement listTeams() method in HackmdClient
   }
 }

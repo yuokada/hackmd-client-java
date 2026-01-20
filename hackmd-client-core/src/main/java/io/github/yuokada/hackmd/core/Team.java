@@ -10,4 +10,4 @@ public record Team(
     String description,
     TeamVisibility visibility,
     boolean upgraded,
-    double createdAt) {}
+    long createdAt) {}
