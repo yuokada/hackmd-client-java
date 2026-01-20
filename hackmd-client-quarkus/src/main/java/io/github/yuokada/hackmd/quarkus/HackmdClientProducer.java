@@ -3,7 +3,6 @@ package io.github.yuokada.hackmd.quarkus;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
-
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import io.github.yuokada.hackmd.core.HackmdClient;
