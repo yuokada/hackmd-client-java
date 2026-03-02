@@ -14,7 +14,7 @@ public record Note(
     long tagsUpdatedAt,
     NotePublishType publishType,
     Long publishedAt,
-    URL permalink,
+    String permalink,
     URL publishLink,
     String shortId,
     long lastChangedAt,
