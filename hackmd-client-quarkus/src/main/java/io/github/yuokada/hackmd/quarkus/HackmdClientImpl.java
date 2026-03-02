@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
+import io.github.yuokada.hackmd.core.HackmdException;
 import io.github.yuokada.hackmd.core.Note;
 import io.github.yuokada.hackmd.core.NoteSummary;
 import io.github.yuokada.hackmd.core.Team;
@@ -28,9 +29,11 @@ public class HackmdClientImpl implements HackmdClient {
   public Optional<Note> getNote(String noteId) {
     try {
       return Optional.ofNullable(restClient.getNote(noteId));
-    } catch (RuntimeException e) {
-      // In real SDK, map 404 to Optional.empty(), others to HackmdException.
-      return Optional.empty();
+    } catch (HackmdException e) {
+      if (e.getStatusCode() == 404) {
+        return Optional.empty();
+      }
+      throw e;
     }
   }
 
@@ -68,8 +71,11 @@ public class HackmdClientImpl implements HackmdClient {
   public Optional<Note> getTeamNote(String teamPath, String noteId) {
     try {
       return Optional.ofNullable(restClient.getTeamNote(teamPath, noteId));
-    } catch (RuntimeException e) {
-      return Optional.empty();
+    } catch (HackmdException e) {
+      if (e.getStatusCode() == 404) {
+        return Optional.empty();
+      }
+      throw e;
     }
   }
 

@@ -1,0 +1,28 @@
+{
+  "id": "team-note-001",
+  "title": "Team onboarding guide",
+  "tags": [
+    "team",
+    "guide"
+  ],
+  "createdAt": 1700000000000,
+  "titleUpdatedAt": 1700100000000,
+  "tagsUpdatedAt": 1700200000000,
+  "publishType": "view",
+  "publishedAt": null,
+  "permalink": null,
+  "publishLink": "https://example.com/notes/team-onboarding",
+  "shortId": "teamOnboarding",
+  "content": "",
+  "lastChangedAt": 1700300000000,
+  "lastChangeUser": {
+    "name": "Team Author",
+    "userPath": "team-user",
+    "photo": "https://example.com/avatar.png",
+    "biography": null
+  },
+  "userPath": "team-user",
+  "teamPath": "demo-team",
+  "readPermission": "signed_in",
+  "writePermission": "owner"
+}
