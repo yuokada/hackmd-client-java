@@ -25,7 +25,7 @@ public class HackmdErrorResponseMapper implements ResponseExceptionMapper<Hackmd
       }
     }
 
-    return new HackmdException(message.toString());
+    return new HackmdException(response.getStatus(), message.toString());
   }
 
   @Override
