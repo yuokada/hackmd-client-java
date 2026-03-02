@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Summary view of a note returned by GET /notes.
  *
- * <p>Field set is intentionally minimal; add fields as you need.
+ * <p>This record represents the summary metadata returned by the endpoint.</p>
  */
 public record NoteSummary(
     String id,
