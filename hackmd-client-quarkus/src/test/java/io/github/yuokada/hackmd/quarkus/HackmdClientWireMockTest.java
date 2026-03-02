@@ -131,6 +131,5 @@ class HackmdClientWireMockTest {
 
     var firstTeam = teams.get(0);
     assertEquals("e9ed1dcd-830f-435c-9fe2-d53d5f191666", firstTeam.id());
-    // TODO: implement listTeams() method in HackmdClient
   }
 }
