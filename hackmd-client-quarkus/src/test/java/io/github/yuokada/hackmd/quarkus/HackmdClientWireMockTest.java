@@ -391,4 +391,26 @@ class HackmdClientWireMockTest {
     assertFalse(history.isEmpty());
     assertEquals("history-note-001", history.get(0).id());
   }
+
+  @Test
+  @DisplayName("401 response propagates as HackmdException with status 401")
+  void getNote_throwsHackmdException_on401() {
+    var ex = assertThrows(HackmdException.class, () -> hackmdClient.getNote("note-unauthorized"));
+    assertEquals(401, ex.getStatusCode());
+    // Verify exactly one request was made — confirms @Retry(abortOn=HackmdException.class)
+    // prevents retries on deterministic API errors such as 401.
+    verify(1, getRequestedFor(urlEqualTo("/v1/notes/note-unauthorized")));
+  }
+
+  @Test
+  @DisplayName("400 response propagates as HackmdException with status 400")
+  void updateNote_throwsHackmdException_on400() {
+    var ex =
+        assertThrows(
+            HackmdException.class,
+            () ->
+                hackmdClient.updateNote(
+                    "note-bad-request", new UpdateNoteRequest(null, null, null, null, null)));
+    assertEquals(400, ex.getStatusCode());
+  }
 }
