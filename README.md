@@ -99,3 +99,91 @@ You can generate WireMock stubs directly from the real HackMD API by using the Q
    - With `quarkus.wiremock.devservices.files-mapping=src/test/resources` (default), you can simply run `./mvnw test` and WireMock will return the recorded responses.
 
 See the WireMock record/playback reference (<https://wiremock.org/docs/record-playback/>) for more details and advanced options.
+
+## WireMock Standalone JAR
+
+The standalone JAR lets you run WireMock as an independent process — no Quarkus
+dev service required. This is useful for recording stubs in a plain shell, or for
+serving existing mappings while developing outside the test lifecycle.
+
+### Download
+
+```bash
+curl -Lo wiremock-standalone-3.13.2.jar \
+  https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.13.2/wiremock-standalone-3.13.2.jar
+```
+
+Or add it to your Maven wrapper cache:
+
+```xml
+<!-- fetch only; not added to any module's compile/runtime classpath -->
+<dependency>
+  <groupId>org.wiremock</groupId>
+  <artifactId>wiremock-standalone</artifactId>
+  <version>3.13.2</version>
+</dependency>
+```
+
+### Serve existing stubs (playback)
+
+Point `--root-dir` at the directory that contains `mappings/` and `__files/`:
+
+```bash
+java -jar wiremock-standalone-3.13.2.jar \
+  --port 8080 \
+  --root-dir hackmd-client-quarkus/src/test/resources
+```
+
+Then set the REST client base URL to `http://localhost:8080` and call the client
+normally. WireMock returns whatever is recorded in the mapping files.
+
+### Record new stubs from the real API
+
+```bash
+# 1. Start WireMock in proxy-and-record mode
+java -jar wiremock-standalone-3.13.2.jar \
+  --port 8080 \
+  --root-dir hackmd-client-quarkus/src/test/resources \
+  --proxy-all https://api.hackmd.io \
+  --record-mappings
+
+# 2. Point the client at WireMock and exercise the endpoints you want to capture
+export HACKMD_API_URL=http://localhost:8080
+# ... invoke hackmdClient methods or run the example app ...
+
+# 3. Stop WireMock (Ctrl-C). Generated stubs appear in:
+#      hackmd-client-quarkus/src/test/resources/mappings/
+#      hackmd-client-quarkus/src/test/resources/__files/
+```
+
+Alternatively, trigger recording via the Admin API while WireMock is already
+running (same approach as the Quarkus Dev Service section above):
+
+```bash
+curl -X POST "http://localhost:8080/__admin/recordings/start" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "targetBaseUrl": "https://api.hackmd.io",
+    "captureHeaders": {
+      "Authorization": {"caseInsensitive": true},
+      "User-Agent":    {"caseInsensitive": true}
+    }
+  }'
+
+# ... send requests ...
+
+curl -X POST "http://localhost:8080/__admin/recordings/stop"
+```
+
+### Useful flags
+
+| Flag | Description |
+|------|-------------|
+| `--port <n>` | HTTP port (default 8080) |
+| `--root-dir <path>` | Directory containing `mappings/` and `__files/` |
+| `--proxy-all <url>` | Proxy unmatched requests to `<url>` |
+| `--record-mappings` | Persist proxied requests as stub files |
+| `--match-headers <header,...>` | Include these headers in generated request matchers |
+| `--print-all-network-traffic` | Log every request/response to stdout |
+
+See the full reference at <https://wiremock.org/docs/standalone/java-jar/>.
