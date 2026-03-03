@@ -65,9 +65,7 @@ class HackmdClientWireMockTest {
             .atPriority(10)
             .willReturn(aResponse().withStatus(404)));
 
-    /*
-     * Teams API stubs
-     */
+    // Teams API list stub
     wiremock.register(
         get(urlEqualTo("/v1/teams"))
             .withHeader("Authorization", equalTo("Bearer test-token"))
@@ -153,6 +151,11 @@ class HackmdClientWireMockTest {
 
     var firstTeam = teams.get(0);
     assertEquals("e9ed1dcd-830f-435c-9fe2-d53d5f191666", firstTeam.id());
+
+    verify(
+        getRequestedFor(urlEqualTo("/v1/teams"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .withHeader("User-Agent", equalTo("hackmd-client-tests")));
   }
 
   @Test
