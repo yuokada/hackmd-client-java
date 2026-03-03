@@ -20,6 +20,18 @@ public class HackmdException extends RuntimeException {
     this.statusCode = -1;
   }
 
+  /**
+   * Constructs a new HackMD exception with the specified status code, detail message and cause.
+   *
+   * @param statusCode the HTTP status code
+   * @param message the detail message
+   * @param cause the cause
+   */
+  public HackmdException(int statusCode, String message, Throwable cause) {
+    super(message, cause);
+    this.statusCode = statusCode;
+  }
+
   /** Returns the HTTP status code associated with this exception, or -1 if unknown. */
   public int getStatusCode() {
     return statusCode;
