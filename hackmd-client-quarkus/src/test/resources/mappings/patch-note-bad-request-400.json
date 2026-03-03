@@ -1,0 +1,13 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "PATCH",
+    "url": "/v1/notes/note-bad-request",
+    "headers": {
+      "Authorization": { "equalTo": "Bearer test-token" }
+    }
+  },
+  "response": {
+    "status": 400
+  }
+}

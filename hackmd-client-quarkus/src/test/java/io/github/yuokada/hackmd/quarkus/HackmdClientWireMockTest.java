@@ -190,19 +190,6 @@ class HackmdClientWireMockTest {
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
                     .withBodyFile("history_ok.json")));
-
-    // 401 Unauthorized — the API rejects this note ID with 401 regardless of token validity
-    wiremock.register(
-        get(urlEqualTo("/v1/notes/note-unauthorized"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(aResponse().withStatus(401)));
-
-    // 400 Bad Request — higher priority than the generic PATCH stub to avoid shadowing
-    wiremock.register(
-        patch(urlEqualTo("/v1/notes/note-bad-request"))
-            .atPriority(1)
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(aResponse().withStatus(400)));
   }
 
   @Test

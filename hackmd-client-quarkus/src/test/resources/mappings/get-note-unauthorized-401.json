@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v1/notes/note-unauthorized",
+    "headers": {
+      "Authorization": { "equalTo": "Bearer test-token" }
+    }
+  },
+  "response": {
+    "status": 401
+  }
+}
