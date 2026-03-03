@@ -66,7 +66,7 @@ class HackmdClientWireMockTest {
             .willReturn(aResponse().withStatus(404)));
 
     /*
-     * Teams API stubs can be added here similarly
+     * Teams API stubs
      */
     wiremock.register(
         get(urlEqualTo("/v1/teams"))
