@@ -7,6 +7,12 @@
     }
   },
   "response": {
-    "status": 401
+    "status": 401,
+    "bodyFileName": "body-v1-notes-note-unauthorized-0eYon.txt",
+    "headers": {
+      "X-HackMD-API-Version": "1.0.0",
+      "Content-Language": "dev",
+      "X-Powered-By": "Express"
+    }
   }
 }
