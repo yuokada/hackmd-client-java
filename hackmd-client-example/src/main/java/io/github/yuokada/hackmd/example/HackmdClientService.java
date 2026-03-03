@@ -13,6 +13,7 @@ import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
 import io.github.yuokada.hackmd.core.Note;
 import io.github.yuokada.hackmd.core.NoteCommentPermission;
+import io.github.yuokada.hackmd.core.NotePermissionRole;
 import io.github.yuokada.hackmd.core.NoteSummary;
 import io.github.yuokada.hackmd.core.UpdateNoteRequest;
 
@@ -49,8 +50,8 @@ public class HackmdClientService implements Runnable {
         new CreateNoteRequest(
             "CLI demo note " + System.currentTimeMillis(),
             "Initial content created from hackmd-client-example.",
-            "guest",
-            "owner",
+            NotePermissionRole.GUEST,
+            NotePermissionRole.OWNER,
             NoteCommentPermission.OWNERS,
             null,
             List.of("demo", "cli"));

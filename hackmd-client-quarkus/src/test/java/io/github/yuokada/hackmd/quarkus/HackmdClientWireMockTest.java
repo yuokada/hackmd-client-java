@@ -255,8 +255,8 @@ class HackmdClientWireMockTest {
         new CreateNoteRequest(
             "New Note",
             "Initial content",
-            "owner",
-            "owner",
+            NotePermissionRole.OWNER,
+            NotePermissionRole.OWNER,
             NoteCommentPermission.OWNERS,
             null,
             List.of("test"));
