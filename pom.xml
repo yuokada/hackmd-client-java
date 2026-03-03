@@ -148,8 +148,8 @@
               <order>java|jakarta|org.eclipse,com|org|picocli|io,,io.github.yuokada,\#</order>
               <semanticSort>true</semanticSort>
             </importOrder>
-            <removeUnusedImports />
-            <forbidWildcardImports />
+            <removeUnusedImports/>
+            <forbidWildcardImports/>
           </java>
           <pom>
             <includes>
@@ -157,7 +157,7 @@
               <include>hackmd-client-core/pom.xml</include>
               <include>hackmd-client-quarkus/pom.xml</include>
             </includes>
-            <sortPom />
+            <sortPom/>
           </pom>
         </configuration>
         <executions>
