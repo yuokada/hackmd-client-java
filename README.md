@@ -187,3 +187,39 @@ curl -X POST "http://localhost:8080/__admin/recordings/stop"
 | `--print-all-network-traffic` | Log every request/response to stdout |
 
 See the full reference at <https://wiremock.org/docs/standalone/java-jar/>.
+
+## Release
+
+### Prerequisites
+
+Ensure code formatting is clean before releasing.
+
+```bash
+# Auto-fix any formatting violations
+./mvnw spotless:apply
+
+# Commit the fixes
+git add pom.xml '**/pom.xml'
+git commit -m "fix: apply spotless formatting"
+```
+
+### Running a Release
+
+```bash
+# Clean up any leftover state from a previously failed release
+./mvnw release:clean
+
+# Prepare the release (prompts for version numbers)
+./mvnw release:clean release:prepare
+
+# Perform the release (builds and publishes artifacts)
+./mvnw release:perform
+```
+
+### Troubleshooting
+
+#### Release fails due to Spotless format violations
+
+`release:prepare` internally forks a `clean verify` build, so any `-Dspotless.check.skip=true`
+passed on the command line is not forwarded to the forked build.
+Run `./mvnw spotless:apply` to fix formatting before releasing.
