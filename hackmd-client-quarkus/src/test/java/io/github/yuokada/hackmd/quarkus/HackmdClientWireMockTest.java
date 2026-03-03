@@ -15,6 +15,8 @@ import io.github.yuokada.hackmd.core.HackmdClient;
 import io.github.yuokada.hackmd.core.HackmdException;
 import io.github.yuokada.hackmd.core.Note;
 import io.github.yuokada.hackmd.core.NoteCommentPermission;
+import io.github.yuokada.hackmd.core.NotePermissionRole;
+import io.github.yuokada.hackmd.core.NotePublishType;
 import io.github.yuokada.hackmd.core.Team;
 import io.github.yuokada.hackmd.core.UpdateNoteRequest;
 
@@ -162,6 +164,9 @@ class HackmdClientWireMockTest {
     assertEquals("demo-note-001", first.id());
     assertEquals("Sample onboarding checklist", first.title());
     assertEquals(List.of("sample", "onboarding"), first.tags());
+    assertEquals(NotePublishType.VIEW, first.publishType());
+    assertEquals(NotePermissionRole.GUEST, first.readPermission());
+    assertEquals(NotePermissionRole.SIGNED_IN, first.writePermission());
 
     verify(
         getRequestedFor(urlEqualTo("/v1/notes"))
@@ -179,6 +184,9 @@ class HackmdClientWireMockTest {
     assertEquals("demo-note-001", first.id());
     assertEquals("Sample onboarding checklist", first.title());
     assertEquals(List.of("sample", "onboarding"), first.tags());
+    assertEquals(NotePublishType.VIEW, first.publishType());
+    assertEquals(NotePermissionRole.GUEST, first.readPermission());
+    assertEquals(NotePermissionRole.SIGNED_IN, first.writePermission());
 
     verify(
         getRequestedFor(urlEqualTo("/v1/notes/demo-note-001"))
