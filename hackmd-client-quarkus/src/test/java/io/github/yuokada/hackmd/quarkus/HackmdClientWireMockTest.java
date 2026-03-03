@@ -131,7 +131,7 @@ class HackmdClientWireMockTest {
 
     // PATCH /v1/teams/{teamPath}/notes/{noteId} — update team note
     wiremock.register(
-        patch(urlMatching("/v1/teams/demo-team/notes/.*"))
+        patch(urlEqualTo("/v1/teams/demo-team/notes/created-team-note-xyz789"))
             .withHeader("Authorization", equalTo("Bearer test-token"))
             .willReturn(
                 aResponse()
@@ -141,7 +141,7 @@ class HackmdClientWireMockTest {
 
     // DELETE /v1/teams/{teamPath}/notes/{noteId} — delete team note
     wiremock.register(
-        delete(urlMatching("/v1/teams/demo-team/notes/.*"))
+        delete(urlEqualTo("/v1/teams/demo-team/notes/created-team-note-xyz789"))
             .withHeader("Authorization", equalTo("Bearer test-token"))
             .willReturn(aResponse().withStatus(204)));
 
