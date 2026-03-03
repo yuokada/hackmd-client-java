@@ -214,6 +214,12 @@ git commit -m "fix: apply spotless formatting"
 ./mvnw -Prelease deploy
 ```
 
+You can also use the helper script to bump and tag versions locally:
+
+```bash
+./scripts/release-version.sh 1.2.3 1.2.4-SNAPSHOT
+```
+
 ### Troubleshooting
 
 #### Release fails due to Spotless format violations
