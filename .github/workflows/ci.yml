@@ -61,4 +61,5 @@ jobs:
         with:
           name: surefire-reports-java-${{ matrix.java }}
           path: '**/target/surefire-reports/'
+          if-no-files-found: ignore
           retention-days: 7
