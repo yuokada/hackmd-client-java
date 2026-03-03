@@ -11,6 +11,13 @@
   <description>Multi-module skeleton: core + Quarkus (MicroProfile Rest Client) implementation</description>
   <url>https://github.com/yuokada/hackmd-client-java</url>
 
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
   <developers>
     <developer>
       <id>yuokada</id>
@@ -24,6 +31,13 @@
     <module>hackmd-client-quarkus</module>
     <module>hackmd-client-example</module>
   </modules>
+
+  <scm>
+    <connection>scm:git:git@github.com:yuokada/hackmd-client-java.git</connection>
+    <developerConnection>scm:git:git@github.com:yuokada/hackmd-client-java.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/yuokada/hackmd-client-java</url>
+  </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -166,20 +180,6 @@
     </plugins>
   </build>
 
-  <scm>
-    <url>https://github.com/yuokada/hackmd-client-java</url>
-    <connection>scm:git:git@github.com:yuokada/hackmd-client-java.git</connection>
-    <developerConnection>scm:git:git@github.com:yuokada/hackmd-client-java.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-
-  <licenses>
-    <license>
-      <name>MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
-    </license>
-  </licenses>
-
   <profiles>
     <profile>
       <id>release</id>
@@ -220,10 +220,10 @@
             <executions>
               <execution>
                 <id>sign-artifacts</id>
-                <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <phase>verify</phase>
               </execution>
             </executions>
           </plugin>
