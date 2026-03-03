@@ -2,7 +2,6 @@ package io.github.yuokada.hackmd.quarkus;
 
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
-
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
 
 import io.github.yuokada.hackmd.core.HackmdException;

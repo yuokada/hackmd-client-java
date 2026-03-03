@@ -3,12 +3,10 @@ package io.github.yuokada.hackmd.example;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import picocli.CommandLine.Command;
-
 import io.quarkus.picocli.runtime.annotations.TopCommand;
 
 import io.github.yuokada.hackmd.core.CreateNoteRequest;

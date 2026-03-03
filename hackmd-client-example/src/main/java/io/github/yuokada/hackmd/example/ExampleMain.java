@@ -3,7 +3,6 @@ package io.github.yuokada.hackmd.example;
 import jakarta.inject.Inject;
 
 import picocli.CommandLine;
-
 import io.quarkus.picocli.runtime.annotations.TopCommand;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
