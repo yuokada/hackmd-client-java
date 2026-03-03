@@ -8,6 +8,9 @@ on:
     branches:
       - '**'
 
+permissions:
+  contents: read
+
 # Cancel in-progress runs for the same branch/PR when a new commit is pushed.
 # Pushes to master always run to completion so the history stays intact.
 concurrency:
