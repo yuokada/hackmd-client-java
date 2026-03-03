@@ -190,6 +190,18 @@ class HackmdClientWireMockTest {
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
                     .withBodyFile("history_ok.json")));
+
+    // 401 Unauthorized — note lookup with invalid token triggers 401
+    wiremock.register(
+        get(urlEqualTo("/v1/notes/note-unauthorized"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .willReturn(aResponse().withStatus(401)));
+
+    // 400 Bad Request — update with malformed payload triggers 400
+    wiremock.register(
+        patch(urlEqualTo("/v1/notes/note-bad-request"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .willReturn(aResponse().withStatus(400)));
   }
 
   @Test
@@ -390,5 +402,24 @@ class HackmdClientWireMockTest {
     var history = hackmdClient.getHistory(null);
     assertFalse(history.isEmpty());
     assertEquals("history-note-001", history.get(0).id());
+  }
+
+  @Test
+  @DisplayName("401 response propagates as HackmdException with status 401")
+  void getNote_throwsHackmdException_on401() {
+    var ex = assertThrows(HackmdException.class, () -> hackmdClient.getNote("note-unauthorized"));
+    assertEquals(401, ex.getStatusCode());
+  }
+
+  @Test
+  @DisplayName("400 response propagates as HackmdException with status 400")
+  void updateNote_throwsHackmdException_on400() {
+    var ex =
+        assertThrows(
+            HackmdException.class,
+            () ->
+                hackmdClient.updateNote(
+                    "note-bad-request", new UpdateNoteRequest(null, null, null, null, "bad")));
+    assertEquals(400, ex.getStatusCode());
   }
 }
