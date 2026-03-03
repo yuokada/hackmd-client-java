@@ -14,6 +14,7 @@ import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
 import io.github.yuokada.hackmd.core.HackmdException;
 import io.github.yuokada.hackmd.core.Note;
+import io.github.yuokada.hackmd.core.NoteCommentPermission;
 import io.github.yuokada.hackmd.core.Team;
 import io.github.yuokada.hackmd.core.UpdateNoteRequest;
 
@@ -244,7 +245,13 @@ class HackmdClientWireMockTest {
   void createNote_returns_created_note() {
     var request =
         new CreateNoteRequest(
-            "New Note", "Initial content", "owner", "owner", "owners", null, List.of("test"));
+            "New Note",
+            "Initial content",
+            "owner",
+            "owner",
+            NoteCommentPermission.OWNERS,
+            null,
+            List.of("test"));
     Note created = hackmdClient.createNote(request);
     assertEquals("created-note-abc123", created.id());
     assertEquals("New Note", created.title());
