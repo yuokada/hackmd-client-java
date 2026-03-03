@@ -1,19 +1,5 @@
 package io.github.yuokada.hackmd.quarkus;
 
-import java.util.List;
-import jakarta.inject.Inject;
-
-import com.github.tomakehurst.wiremock.client.WireMock;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import io.quarkiverse.wiremock.devservice.ConnectWireMock;
-import io.quarkus.test.junit.QuarkusTest;
-
-import io.github.yuokada.hackmd.core.HackmdClient;
-import io.github.yuokada.hackmd.core.HackmdException;
-import io.github.yuokada.hackmd.core.Team;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -24,6 +10,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+
+import jakarta.inject.Inject;
+
+import com.github.tomakehurst.wiremock.client.WireMock;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import io.quarkiverse.wiremock.devservice.ConnectWireMock;
+import io.quarkus.test.junit.QuarkusTest;
+
+import io.github.yuokada.hackmd.core.HackmdClient;
+import io.github.yuokada.hackmd.core.HackmdException;
+import io.github.yuokada.hackmd.core.Team;
 
 @QuarkusTest
 @ConnectWireMock
