@@ -8,6 +8,6 @@ public record CreateNoteRequest(
     String content,
     String readPermission,
     String writePermission,
-    String commentPermission,
+    NoteCommentPermission commentPermission,
     String permalink,
     List<String> tags) {}

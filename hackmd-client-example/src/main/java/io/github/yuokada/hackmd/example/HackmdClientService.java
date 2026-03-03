@@ -12,6 +12,7 @@ import io.quarkus.picocli.runtime.annotations.TopCommand;
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
 import io.github.yuokada.hackmd.core.Note;
+import io.github.yuokada.hackmd.core.NoteCommentPermission;
 import io.github.yuokada.hackmd.core.NoteSummary;
 import io.github.yuokada.hackmd.core.UpdateNoteRequest;
 
@@ -50,7 +51,7 @@ public class HackmdClientService implements Runnable {
             "Initial content created from hackmd-client-example.",
             "guest",
             "owner",
-            "owners",
+            NoteCommentPermission.OWNERS,
             null,
             List.of("demo", "cli"));
 
