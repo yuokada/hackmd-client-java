@@ -1,32 +1,17 @@
 package io.github.yuokada.hackmd.core;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum NotePublishType {
-  EDIT("edit"),
-  VIEW("view"),
-  SLIDE("slide"),
-  BOOK("book");
+  @JsonProperty("edit")
+  EDIT,
 
-  private final String value;
+  @JsonProperty("view")
+  VIEW,
 
-  NotePublishType(String value) {
-    this.value = value;
-  }
+  @JsonProperty("slide")
+  SLIDE,
 
-  @JsonCreator
-  public static NotePublishType fromValue(String raw) {
-    for (var type : values()) {
-      if (type.value.equalsIgnoreCase(raw)) {
-        return type;
-      }
-    }
-    throw new IllegalArgumentException("Unknown NotePublishType: " + raw);
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
+  @JsonProperty("book")
+  BOOK
 }
