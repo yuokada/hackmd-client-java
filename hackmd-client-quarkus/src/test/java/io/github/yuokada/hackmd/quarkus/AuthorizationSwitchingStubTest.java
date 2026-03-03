@@ -48,7 +48,7 @@ public class AuthorizationSwitchingStubTest {
 
     wiremock.register(
         get(urlEqualTo("/me"))
-            .atPriority(10) // フォールバック
+            .atPriority(10) // fallback — no Authorization header
             .willReturn(aResponse().withStatus(401)));
 
     // List notes stub
