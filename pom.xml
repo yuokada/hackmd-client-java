@@ -4,7 +4,7 @@
 
   <groupId>io.github.yuokada</groupId>
   <artifactId>hackmd-client-parent</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
   <packaging>pom</packaging>
 
   <name>HackMD Client Parent</name>
@@ -35,7 +35,7 @@
   <scm>
     <connection>scm:git:git@github.com:yuokada/hackmd-client-java.git</connection>
     <developerConnection>scm:git:git@github.com:yuokada/hackmd-client-java.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>v0.1.0</tag>
     <url>https://github.com/yuokada/hackmd-client-java</url>
   </scm>
 
@@ -148,8 +148,8 @@
               <order>java|jakarta|org.eclipse,com|org|picocli|io,,io.github.yuokada,\#</order>
               <semanticSort>true</semanticSort>
             </importOrder>
-            <removeUnusedImports/>
-            <forbidWildcardImports/>
+            <removeUnusedImports />
+            <forbidWildcardImports />
           </java>
           <pom>
             <includes>
@@ -157,7 +157,7 @@
               <include>hackmd-client-core/pom.xml</include>
               <include>hackmd-client-quarkus/pom.xml</include>
             </includes>
-            <sortPom/>
+            <sortPom />
           </pom>
         </configuration>
         <executions>
