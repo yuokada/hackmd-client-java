@@ -4,17 +4,18 @@ applyTo:
   - "hackmd-client-quarkus/src/test/resources/**"
 ---
 
-# Quarkus tests (JUnit 5 + WireMock)
+# Quarkus tests (JUnit 5 + WireMock) review rules
 
-## Quarkus test conventions
-- Use Quarkus test facilities (quarkus-junit5). Keep tests hermetic (no real network).
+## Must-have scenarios for HackmdClientImpl
+- Verify 404 is mapped to Optional.empty() for:
+  - `getNote`
+  - `getTeamNote`
+- Verify non-404 errors are surfaced (not converted to empty/placeholder values).
+
+## Fault tolerance behavior
+- If @Retry is present, tests should cover at least one transient failure path (e.g., first call fails, second succeeds),
+  OR explicitly justify why retry is not expected to trigger.
+- If @Timeout is present, ensure timeouts are bounded and do not hang tests.
 
 ## WireMock fixtures
-- Changes under `src/test/resources/**` (including __files) must explain:
-  - Which scenario it covers (happy-path / auth failure / rate-limit / server error, etc.)
-  - Why the payload shape matters (field missing/extra, nulls, types)
-- Prefer readable, minimal fixtures; avoid huge copies of real responses unless necessary.
-
-## Stability
-- No dependence on fixed ports, current time, ordering, or global shared state.
-- Tests should run reliably in parallel (or explicitly opt out if truly required).
+- Any change under `src/test/resources/**` must state the scenario it represents (401/403/404/429/5xx).

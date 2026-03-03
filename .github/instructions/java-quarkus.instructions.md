@@ -4,24 +4,30 @@ applyTo:
   - "hackmd-client-quarkus/src/main/resources/**"
 ---
 
-# Quarkus module review rules (DI + REST Client + Fault Tolerance)
+# Quarkus module review rules (HackmdClientImpl + REST Client + Fault Tolerance)
 
-## Dependency / layering
-- Keep `hackmd-client-core` free from Quarkus/Jackson-databind concerns.
-- Quarkus module may use REST Client + Jackson for (de)serialization, but do not leak Quarkus/Jackson impl types into public APIs.
+## Target classes
+- Pay special attention to:
+  - `io.github.yuokada.hackmd.quarkus.HackmdClientImpl`
+  - `HackmdRestClient` (MicroProfile REST Client interface)
 
-## CDI / configuration
-- Prefer CDI-managed beans (quarkus-arc). Avoid manual singletons/static state.
-- Configuration must be externalized (application.properties/yaml). No hard-coded endpoints/tokens.
-- Any new config key: ensure naming is consistent and document defaults.
+## Fault tolerance policy (MUST enforce)
+- All methods in `HackmdClientImpl` that call `restClient.*` MUST have a bounded timeout.
+- Retry policy must be consistent and intentional:
+  - Do NOT retry on client errors (typically 4xx) unless explicitly justified (e.g., 429 with backoff).
+  - Writes (create/update/delete) MUST NOT be retried by default (idempotency risk). If retry is added, reviewer must require an idempotency strategy or proof it is safe.
 
-## REST client correctness
-- Validate request/response mapping: headers, auth, status code handling, error bodies.
-- No silent fallback on non-2xx responses. Ensure errors are surfaced as clear exceptions/results.
+## Review triggers (FLAG)
+- `@Retry(... abortOn = HackmdException.class)`:
+  - Flag and ask: is the intention to retry on HackMD API failures? If yes, this setting likely prevents it.
+- Any new `@Retry` without clear justification of which failures are transient.
+- Any `@Timeout` that is increased without explaining impact on thread usage and UX.
 
-## Fault tolerance (smallrye)
-- If adding @Retry/@Timeout/@CircuitBreaker/@Fallback:
-  - Avoid retrying non-transient errors (e.g., 4xx).
-  - Avoid "retry + client retry" double-retry.
-  - Ensure timeouts are bounded and consistent with downstream SLAs.
-  - Fallback must not hide failures unless explicitly intended and documented.
+## HTTP error mapping
+- 404 -> Optional.empty() pattern in `getNote/getTeamNote` is OK.
+- For other statuses (401/403/429/5xx), ensure behavior is explicit:
+  - no silent fallback
+  - errors surfaced as `HackmdException` (or well-defined domain error)
+
+## Public API cleanliness
+- Do not leak Quarkus/MicroProfile/Jackson implementation types in public APIs (keep core types only).
