@@ -8,6 +8,12 @@
     }
   },
   "response": {
-    "status": 400
+    "status": 400,
+    "bodyFileName": "body-v1-notes-note-bad-request.txt",
+    "headers": {
+      "X-HackMD-API-Version": "1.0.0",
+      "Content-Language": "dev",
+      "X-Powered-By": "Express"
+    }
   }
 }
