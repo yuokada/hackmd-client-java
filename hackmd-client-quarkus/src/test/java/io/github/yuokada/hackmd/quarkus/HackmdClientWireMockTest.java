@@ -25,8 +25,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.patch;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
@@ -255,8 +257,8 @@ class HackmdClientWireMockTest {
         new CreateNoteRequest(
             "New Note",
             "Initial content",
-            "owner",
-            "owner",
+            NotePermissionRole.OWNER,
+            NotePermissionRole.OWNER,
             NoteCommentPermission.OWNERS,
             null,
             List.of("test"));
@@ -264,6 +266,11 @@ class HackmdClientWireMockTest {
     assertEquals("created-note-abc123", created.id());
     assertEquals("New Note", created.title());
     assertEquals("Initial content", created.content());
+    verify(
+        postRequestedFor(urlEqualTo("/v1/notes"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .withRequestBody(matchingJsonPath("$.readPermission", equalTo("owner")))
+            .withRequestBody(matchingJsonPath("$.writePermission", equalTo("owner"))));
   }
 
   @Test

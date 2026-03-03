@@ -6,8 +6,8 @@ import java.util.List;
 public record CreateNoteRequest(
     String title,
     String content,
-    String readPermission,
-    String writePermission,
+    NotePermissionRole readPermission,
+    NotePermissionRole writePermission,
     NoteCommentPermission commentPermission,
     String permalink,
     List<String> tags) {}
