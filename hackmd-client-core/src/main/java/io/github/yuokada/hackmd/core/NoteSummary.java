@@ -4,9 +4,11 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Summary view of a note returned by GET /notes.
+ * Note item as returned by list endpoints (e.g. {@code GET /notes}, {@code GET
+ * /teams/{teamPath}/notes}).
  *
- * <p>This record represents the summary metadata returned by the endpoint.
+ * <p>The HackMD API returns the same field set for both list and detail responses; this record
+ * mirrors that shape. Use {@link Note} when working with single-note detail endpoints.
  */
 public record NoteSummary(
     String id,

@@ -3,7 +3,9 @@ package io.github.yuokada.hackmd.core;
 import java.net.URL;
 import java.util.List;
 
-/** Detailed view of a note returned by GET /notes/{noteId}. */
+/**
+ * Detailed view of a note returned by {@code GET /notes/{noteId}} or team note detail endpoints.
+ */
 public record Note(
     String id,
     String title,
