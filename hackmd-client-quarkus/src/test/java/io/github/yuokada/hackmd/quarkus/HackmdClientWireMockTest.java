@@ -109,6 +109,42 @@ class HackmdClientWireMockTest {
             .withHeader("Authorization", equalTo("Bearer test-token"))
             .willReturn(aResponse().withStatus(500)));
 
+    // GET /v1/teams/{teamPath}/notes — list team notes
+    wiremock.register(
+        get(urlEqualTo("/v1/teams/demo-team/notes"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBodyFile("team_notes_list_ok.json")));
+
+    // POST /v1/teams/{teamPath}/notes — create team note
+    wiremock.register(
+        post(urlEqualTo("/v1/teams/demo-team/notes"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .willReturn(
+                aResponse()
+                    .withStatus(201)
+                    .withHeader("Content-Type", "application/json")
+                    .withBodyFile("created-team-note.json")));
+
+    // PATCH /v1/teams/{teamPath}/notes/{noteId} — update team note
+    wiremock.register(
+        patch(urlEqualTo("/v1/teams/demo-team/notes/created-team-note-xyz789"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBodyFile("updated-team-note.json")));
+
+    // DELETE /v1/teams/{teamPath}/notes/{noteId} — delete team note
+    wiremock.register(
+        delete(urlEqualTo("/v1/teams/demo-team/notes/created-team-note-xyz789"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .willReturn(aResponse().withStatus(204)));
+
     // POST /v1/notes — create note
     wiremock.register(
         post(urlEqualTo("/v1/notes"))
@@ -248,6 +284,56 @@ class HackmdClientWireMockTest {
             HackmdException.class,
             () -> hackmdClient.getTeamNote("demo-team", "note-server-error"));
     assertEquals(500, ex.getStatusCode());
+  }
+
+  @Test
+  @DisplayName("listTeamNotes returns team notes")
+  void listTeamNotes_returns_team_notes() {
+    var notes = hackmdClient.listTeamNotes("demo-team");
+    assertFalse(notes.isEmpty());
+    assertEquals("team-note-001", notes.get(0).id());
+    assertEquals("Team onboarding guide", notes.get(0).title());
+  }
+
+  @Test
+  @DisplayName("createTeamNote returns the created team note")
+  void createTeamNote_returns_created_note() {
+    var request =
+        new CreateNoteRequest(
+            "New Team Note",
+            "Team note initial content",
+            NotePermissionRole.SIGNED_IN,
+            NotePermissionRole.OWNER,
+            NoteCommentPermission.OWNERS,
+            null,
+            List.of("team", "test"));
+    Note created = hackmdClient.createTeamNote("demo-team", request);
+    assertEquals("created-team-note-xyz789", created.id());
+    assertEquals("New Team Note", created.title());
+    assertEquals("Team note initial content", created.content());
+    verify(
+        postRequestedFor(urlEqualTo("/v1/teams/demo-team/notes"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .withRequestBody(matchingJsonPath("$.readPermission", equalTo("signed_in")))
+            .withRequestBody(matchingJsonPath("$.writePermission", equalTo("owner"))));
+  }
+
+  @Test
+  @DisplayName("updateTeamNote returns the updated team note")
+  void updateTeamNote_returns_updated_note() {
+    Note updated =
+        hackmdClient.updateTeamNote(
+            "demo-team",
+            "created-team-note-xyz789",
+            new UpdateNoteRequest(null, null, null, null, "Updated team note content"));
+    assertEquals("created-team-note-xyz789", updated.id());
+    assertEquals("Updated team note content", updated.content());
+  }
+
+  @Test
+  @DisplayName("deleteTeamNote completes without throwing")
+  void deleteTeamNote_does_not_throw() {
+    assertDoesNotThrow(() -> hackmdClient.deleteTeamNote("demo-team", "created-team-note-xyz789"));
   }
 
   @Test
