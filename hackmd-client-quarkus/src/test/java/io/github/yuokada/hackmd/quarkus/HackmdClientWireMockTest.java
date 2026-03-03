@@ -191,15 +191,16 @@ class HackmdClientWireMockTest {
                     .withHeader("Content-Type", "application/json")
                     .withBodyFile("history_ok.json")));
 
-    // 401 Unauthorized — note lookup with invalid token triggers 401
+    // 401 Unauthorized — the API rejects this note ID with 401 regardless of token validity
     wiremock.register(
         get(urlEqualTo("/v1/notes/note-unauthorized"))
             .withHeader("Authorization", equalTo("Bearer test-token"))
             .willReturn(aResponse().withStatus(401)));
 
-    // 400 Bad Request — update with malformed payload triggers 400
+    // 400 Bad Request — higher priority than the generic PATCH stub to avoid shadowing
     wiremock.register(
         patch(urlEqualTo("/v1/notes/note-bad-request"))
+            .atPriority(1)
             .withHeader("Authorization", equalTo("Bearer test-token"))
             .willReturn(aResponse().withStatus(400)));
   }
@@ -409,6 +410,9 @@ class HackmdClientWireMockTest {
   void getNote_throwsHackmdException_on401() {
     var ex = assertThrows(HackmdException.class, () -> hackmdClient.getNote("note-unauthorized"));
     assertEquals(401, ex.getStatusCode());
+    // Verify exactly one request was made — confirms @Retry(abortOn=HackmdException.class)
+    // prevents retries on deterministic API errors such as 401.
+    verify(1, getRequestedFor(urlEqualTo("/v1/notes/note-unauthorized")));
   }
 
   @Test
@@ -419,7 +423,7 @@ class HackmdClientWireMockTest {
             HackmdException.class,
             () ->
                 hackmdClient.updateNote(
-                    "note-bad-request", new UpdateNoteRequest(null, null, null, null, "bad")));
+                    "note-bad-request", new UpdateNoteRequest(null, null, null, null, null)));
     assertEquals(400, ex.getStatusCode());
   }
 }
