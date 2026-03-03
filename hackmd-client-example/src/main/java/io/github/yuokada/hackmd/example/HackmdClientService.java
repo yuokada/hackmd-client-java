@@ -7,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import picocli.CommandLine.Command;
+import io.quarkus.picocli.runtime.annotations.TopCommand;
 
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
@@ -14,6 +15,7 @@ import io.github.yuokada.hackmd.core.Note;
 import io.github.yuokada.hackmd.core.NoteSummary;
 import io.github.yuokada.hackmd.core.UpdateNoteRequest;
 
+@TopCommand
 @ApplicationScoped
 @Command(name = "hackmd-client", mixinStandardHelpOptions = true)
 public class HackmdClientService implements Runnable {
