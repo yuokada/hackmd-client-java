@@ -16,21 +16,25 @@ import io.github.yuokada.hackmd.core.UserProfile;
 
 public class HackmdClientImpl implements HackmdClient {
 
+  private static final int FT_MAX_RETRIES = 3;
+  private static final long FT_DELAY_MS = 500;
+  private static final long FT_TIMEOUT_MS = 5000;
+
   private final HackmdRestClient restClient;
 
   public HackmdClientImpl(HackmdRestClient restClient) {
     this.restClient = restClient;
   }
 
-  @Retry(maxRetries = 3, delay = 500)
-  @Timeout(5000)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> listNotes() {
     return restClient.listNotes();
   }
 
-  @Retry(maxRetries = 3, delay = 500)
-  @Timeout(5000)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public Optional<Note> getNote(String noteId) {
     try {
@@ -58,15 +62,15 @@ public class HackmdClientImpl implements HackmdClient {
     restClient.deleteNote(noteId);
   }
 
-  @Retry(maxRetries = 3, delay = 500)
-  @Timeout(5000)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<Team> listTeams() {
     return restClient.listTeams();
   }
 
-  @Retry(maxRetries = 3, delay = 500)
-  @Timeout(5000)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> listTeamNotes(String teamPath) {
     return restClient.listTeamNotes(teamPath);
@@ -77,8 +81,8 @@ public class HackmdClientImpl implements HackmdClient {
     return restClient.createTeamNote(teamPath, request);
   }
 
-  @Retry(maxRetries = 3, delay = 500)
-  @Timeout(5000)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public Optional<Note> getTeamNote(String teamPath, String noteId) {
     try {
@@ -101,15 +105,15 @@ public class HackmdClientImpl implements HackmdClient {
     restClient.deleteTeamNote(teamPath, noteId);
   }
 
-  @Retry(maxRetries = 3, delay = 500)
-  @Timeout(5000)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public UserProfile getCurrentUser() {
     return restClient.getCurrentUser();
   }
 
-  @Retry(maxRetries = 3, delay = 500)
-  @Timeout(5000)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> getHistory(Integer limit) {
     return restClient.getHistory(limit);
