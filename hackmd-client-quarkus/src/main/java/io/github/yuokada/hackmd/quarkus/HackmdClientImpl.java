@@ -2,6 +2,8 @@ package io.github.yuokada.hackmd.quarkus;
 
 import java.util.List;
 import java.util.Optional;
+import org.eclipse.microprofile.faulttolerance.Retry;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
@@ -14,17 +16,25 @@ import io.github.yuokada.hackmd.core.UserProfile;
 
 public class HackmdClientImpl implements HackmdClient {
 
+  private static final int FT_MAX_RETRIES = 3;
+  private static final long FT_DELAY_MS = 500;
+  private static final long FT_TIMEOUT_MS = 5000;
+
   private final HackmdRestClient restClient;
 
   public HackmdClientImpl(HackmdRestClient restClient) {
     this.restClient = restClient;
   }
 
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> listNotes() {
     return restClient.listNotes();
   }
 
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public Optional<Note> getNote(String noteId) {
     try {
@@ -52,11 +62,15 @@ public class HackmdClientImpl implements HackmdClient {
     restClient.deleteNote(noteId);
   }
 
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<Team> listTeams() {
     return restClient.listTeams();
   }
 
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> listTeamNotes(String teamPath) {
     return restClient.listTeamNotes(teamPath);
@@ -67,6 +81,8 @@ public class HackmdClientImpl implements HackmdClient {
     return restClient.createTeamNote(teamPath, request);
   }
 
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public Optional<Note> getTeamNote(String teamPath, String noteId) {
     try {
@@ -89,11 +105,15 @@ public class HackmdClientImpl implements HackmdClient {
     restClient.deleteTeamNote(teamPath, noteId);
   }
 
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public UserProfile getCurrentUser() {
     return restClient.getCurrentUser();
   }
 
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
+  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> getHistory(Integer limit) {
     return restClient.getHistory(limit);
