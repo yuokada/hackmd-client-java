@@ -1,5 +1,7 @@
 # HackMD API Client (Quarkus Rest Client) - Skeleton
 
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.yuokada/hackmd-client-quarkus)](https://central.sonatype.com/artifact/io.github.yuokada/hackmd-client-quarkus)
+
 This is a Maven multi-module skeleton for providing a **transport-agnostic core** and a **Quarkus implementation** based on MicroProfile Rest Client.
 
 ## Modules
