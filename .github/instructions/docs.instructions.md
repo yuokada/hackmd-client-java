@@ -6,6 +6,6 @@ applyTo:
 
 # Docs review rules
 
-- サンプルはコピペで動く（コマンド、前提、出力例）
-- 変更に合わせてリンク/手順/コード断片が更新されているか確認
-- バージョン（Java 21, JUnit 5）など前提が明記されているか確認
+- Samples must be copy-paste runnable (commands, prerequisites, and example output included)
+- Verify that links, steps, and code snippets are updated to reflect any changes
+- Verify that prerequisites such as versions (Java 17, JUnit 5) are explicitly stated
