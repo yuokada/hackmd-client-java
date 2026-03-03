@@ -1,0 +1,23 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    ignore:
+      - dependency-name: "io.quarkus.platform:*"
+        update-types: ["version-update:semver-minor"]
+    groups:
+      maven-plugin-dependencies:
+        patterns:
+          - "org.apache.maven.plugins*"
+      quarkus-dependencies:
+        patterns:
+          - "io.quarkus:*"
+          - "io.quarkus.platform:*"
+          - "io.quarkus.*"
