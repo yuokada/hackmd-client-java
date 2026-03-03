@@ -4,6 +4,6 @@ package io.github.yuokada.hackmd.core;
 public record UpdateNoteRequest(
     String parentFolderId,
     String permalink,
-    String writePermission,
-    String readPermission,
+    NotePermissionRole writePermission,
+    NotePermissionRole readPermission,
     String content) {}
