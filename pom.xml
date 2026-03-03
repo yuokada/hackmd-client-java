@@ -4,7 +4,7 @@
 
   <groupId>io.github.yuokada</groupId>
   <artifactId>hackmd-client-parent</artifactId>
-  <version>0.1.1-SNAPSHOT</version>
+  <version>0.1.1</version>
   <packaging>pom</packaging>
 
   <name>HackMD Client Parent</name>
