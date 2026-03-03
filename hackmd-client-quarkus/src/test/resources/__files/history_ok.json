@@ -1,0 +1,22 @@
+[
+  {
+    "id": "history-note-001",
+    "title": "History Note 1",
+    "content": null,
+    "tags": [],
+    "createdAt": 1700000000000,
+    "titleUpdatedAt": 1700000000000,
+    "tagsUpdatedAt": 1700000000000,
+    "publishType": "view",
+    "publishedAt": null,
+    "permalink": null,
+    "publishLink": null,
+    "shortId": "hist01",
+    "lastChangedAt": 1700000000000,
+    "lastChangeUser": null,
+    "userPath": "testuser",
+    "teamPath": null,
+    "readPermission": "owner",
+    "writePermission": "owner"
+  }
+]
