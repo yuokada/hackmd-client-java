@@ -26,14 +26,14 @@ public class HackmdClientImpl implements HackmdClient {
     this.restClient = restClient;
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
   @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> listNotes() {
     return restClient.listNotes();
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
   @Timeout(FT_TIMEOUT_MS)
   @Override
   public Optional<Note> getNote(String noteId) {
@@ -62,14 +62,14 @@ public class HackmdClientImpl implements HackmdClient {
     restClient.deleteNote(noteId);
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
   @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<Team> listTeams() {
     return restClient.listTeams();
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
   @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> listTeamNotes(String teamPath) {
@@ -81,7 +81,7 @@ public class HackmdClientImpl implements HackmdClient {
     return restClient.createTeamNote(teamPath, request);
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
   @Timeout(FT_TIMEOUT_MS)
   @Override
   public Optional<Note> getTeamNote(String teamPath, String noteId) {
@@ -105,14 +105,14 @@ public class HackmdClientImpl implements HackmdClient {
     restClient.deleteTeamNote(teamPath, noteId);
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
   @Timeout(FT_TIMEOUT_MS)
   @Override
   public UserProfile getCurrentUser() {
     return restClient.getCurrentUser();
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS)
+  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
   @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> getHistory(Integer limit) {
