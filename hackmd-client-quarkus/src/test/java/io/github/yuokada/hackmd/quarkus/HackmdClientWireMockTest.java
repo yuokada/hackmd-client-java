@@ -311,6 +311,11 @@ class HackmdClientWireMockTest {
     assertEquals("created-team-note-xyz789", created.id());
     assertEquals("New Team Note", created.title());
     assertEquals("Team note initial content", created.content());
+    verify(
+        postRequestedFor(urlEqualTo("/v1/teams/demo-team/notes"))
+            .withHeader("Authorization", equalTo("Bearer test-token"))
+            .withRequestBody(matchingJsonPath("$.readPermission", equalTo("signed_in")))
+            .withRequestBody(matchingJsonPath("$.writePermission", equalTo("owner"))));
   }
 
   @Test
