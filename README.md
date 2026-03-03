@@ -206,20 +206,16 @@ git commit -m "fix: apply spotless formatting"
 ### Running a Release
 
 ```bash
-# Clean up any leftover state from a previously failed release
-./mvnw release:clean
+# Update the project version (use the version you want to release)
+./mvnw versions:set -DnewVersion=1.2.3 -DgenerateBackupPoms=false
 
-# Prepare the release (prompts for version numbers)
-./mvnw release:clean release:prepare
-
-# Perform the release (builds and publishes artifacts)
-./mvnw release:perform
+# Verify and publish (uses the release profile)
+./mvnw -Prelease clean verify
+./mvnw -Prelease deploy
 ```
 
 ### Troubleshooting
 
 #### Release fails due to Spotless format violations
 
-`release:prepare` internally forks a `clean verify` build, so any `-Dspotless.check.skip=true`
-passed on the command line is not forwarded to the forked build.
 Run `./mvnw spotless:apply` to fix formatting before releasing.

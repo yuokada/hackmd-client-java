@@ -56,7 +56,7 @@
 
     <maven.surefire.plugin.version>3.5.5</maven.surefire.plugin.version>
     <maven.failsafe.plugin.version>3.5.5</maven.failsafe.plugin.version>
-    <release-plugin.version>3.2.0</release-plugin.version>
+    <versions-plugin.version>2.18.0</versions-plugin.version>
     <gpg-plugin.version>3.2.8</gpg-plugin.version>
     <javadoc-plugin.version>3.12.0</javadoc-plugin.version>
     <central-publishing-plugin.version>0.9.0</central-publishing-plugin.version>
@@ -169,13 +169,11 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>${release-plugin.version}</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>${versions-plugin.version}</version>
         <configuration>
-          <pushChanges>false</pushChanges>
-          <tagNameFormat>v@{project.version}</tagNameFormat>
-          <arguments>-Dspotless.check.skip=true</arguments>
+          <processAllModules>true</processAllModules>
         </configuration>
       </plugin>
     </plugins>
