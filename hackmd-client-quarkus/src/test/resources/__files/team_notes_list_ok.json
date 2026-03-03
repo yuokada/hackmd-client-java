@@ -1,0 +1,22 @@
+[
+  {
+    "id": "team-note-001",
+    "title": "Team onboarding guide",
+    "content": "",
+    "tags": ["team", "guide"],
+    "createdAt": 1700000000000,
+    "titleUpdatedAt": 1700100000000,
+    "tagsUpdatedAt": 1700200000000,
+    "publishType": "view",
+    "publishedAt": null,
+    "permalink": null,
+    "publishLink": "https://example.com/notes/team-onboarding",
+    "shortId": "teamOnboarding",
+    "lastChangedAt": 1700300000000,
+    "lastChangeUser": null,
+    "userPath": null,
+    "teamPath": "demo-team",
+    "readPermission": "signed_in",
+    "writePermission": "owner"
+  }
+]

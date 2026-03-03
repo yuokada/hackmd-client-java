@@ -1,0 +1,20 @@
+{
+  "id": "created-team-note-xyz789",
+  "title": "New Team Note",
+  "content": "Updated team note content",
+  "tags": ["team", "test"],
+  "createdAt": 1700000000000,
+  "titleUpdatedAt": 1700000000000,
+  "tagsUpdatedAt": 1700000000000,
+  "publishType": "view",
+  "publishedAt": null,
+  "permalink": null,
+  "publishLink": null,
+  "shortId": "xyz789",
+  "lastChangedAt": 1700000001000,
+  "lastChangeUser": null,
+  "userPath": null,
+  "teamPath": "demo-team",
+  "readPermission": "signed_in",
+  "writePermission": "owner"
+}
