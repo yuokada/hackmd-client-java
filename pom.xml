@@ -52,7 +52,7 @@
     <spotless.version>3.3.0</spotless.version>
     <google-java-format.version>1.17.0</google-java-format.version>
 
-    <quarkus-wiremock.version>1.5.3</quarkus-wiremock.version>
+    <quarkus-wiremock.version>1.6.1</quarkus-wiremock.version>
 
     <maven.surefire.plugin.version>3.5.5</maven.surefire.plugin.version>
     <maven.failsafe.plugin.version>3.5.5</maven.failsafe.plugin.version>
