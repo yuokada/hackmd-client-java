@@ -22,7 +22,8 @@ import io.github.yuokada.hackmd.core.UpdateNoteRequest;
 @Command(name = "hackmd-client", mixinStandardHelpOptions = true)
 public class HackmdClientService implements Runnable {
 
-  @Inject HackmdClient hackmdClient;
+  @Inject
+  HackmdClient hackmdClient;
 
   @Override
   public void run() {
@@ -46,24 +47,22 @@ public class HackmdClientService implements Runnable {
   private void demoLifecycle() {
     System.out.println("\n--- Demo: create/update/delete note ---");
 
-    var request =
-        new CreateNoteRequest(
-            "CLI demo note " + System.currentTimeMillis(),
-            "Initial content created from hackmd-client-example.",
-            NotePermissionRole.GUEST,
-            NotePermissionRole.OWNER,
-            NoteCommentPermission.OWNERS,
-            null,
-            List.of("demo", "cli"));
+    var request = new CreateNoteRequest(
+        "CLI demo note " + System.currentTimeMillis(),
+        "Initial content created from hackmd-client-example.",
+        NotePermissionRole.GUEST,
+        NotePermissionRole.OWNER,
+        NoteCommentPermission.OWNERS,
+        null,
+        List.of("demo", "cli"));
 
     Note created = null;
     try {
       created = hackmdClient.createNote(request);
       System.out.printf("Created note %s with id=%s%n", created.title(), created.id());
 
-      var updated =
-          hackmdClient.updateNote(
-              created.id(), new UpdateNoteRequest(null, null, null, null, "Updated content"));
+      var updated = hackmdClient.updateNote(
+          created.id(), new UpdateNoteRequest(null, null, null, null, "Updated content"));
       var content = Optional.ofNullable(updated.content()).orElse("");
       System.out.printf("Updated note %s (content length=%d)%n", updated.id(), content.length());
 

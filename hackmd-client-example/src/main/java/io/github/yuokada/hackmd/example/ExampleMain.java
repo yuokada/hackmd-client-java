@@ -10,8 +10,12 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 @QuarkusMain
 public class ExampleMain implements QuarkusApplication {
 
-  @Inject CommandLine.IFactory factory;
-  @Inject @TopCommand HackmdClientService command;
+  @Inject
+  CommandLine.IFactory factory;
+
+  @Inject
+  @TopCommand
+  HackmdClientService command;
 
   @Override
   public int run(String... args) {

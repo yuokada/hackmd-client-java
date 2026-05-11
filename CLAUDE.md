@@ -18,7 +18,7 @@ Maven multi-module Java 17 project implementing a **transport-agnostic HackMD AP
 # Run a single test method
 ./mvnw test -pl hackmd-client-quarkus -Dtest=HackmdClientWireMockTest#listNotes_is_stubbed_via_wiremock
 
-# Check code formatting (Google Java Format)
+# Check code formatting (Palantir Java Format)
 ./mvnw spotless:check
 
 # Apply code formatting

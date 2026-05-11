@@ -43,153 +43,127 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ConnectWireMock
 class HackmdClientWireMockTest {
 
-  @Inject HackmdClient hackmdClient;
+  @Inject
+  HackmdClient hackmdClient;
 
   WireMock wiremock;
 
   @BeforeEach
   public void beforeEach() {
     // List notes stub
-    wiremock.register(
-        get(urlEqualTo("/v1/notes"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("notes_list_ok.json")));
+    wiremock.register(get(urlEqualTo("/v1/notes"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("notes_list_ok.json")));
 
     // Fallback for list notes
     wiremock.register(
         get(urlEqualTo("/v1/notes")).atPriority(10).willReturn(aResponse().withStatus(401)));
 
-    wiremock.register(
-        get(urlEqualTo("/v1/notes/demo-note-001"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("demo-note-001.json")));
+    wiremock.register(get(urlEqualTo("/v1/notes/demo-note-001"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("demo-note-001.json")));
 
     // Fallback for list notes
-    wiremock.register(
-        get(urlEqualTo("/v1/notes/note-not-found"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .atPriority(10)
-            .willReturn(aResponse().withStatus(404)));
+    wiremock.register(get(urlEqualTo("/v1/notes/note-not-found"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .atPriority(10)
+        .willReturn(aResponse().withStatus(404)));
 
     // Teams API list stub
-    wiremock.register(
-        get(urlEqualTo("/v1/teams"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("teams_list_ok.json")));
+    wiremock.register(get(urlEqualTo("/v1/teams"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("teams_list_ok.json")));
 
     // Team note stubs
-    wiremock.register(
-        get(urlEqualTo("/v1/teams/demo-team/notes/team-note-001"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("team-note-001.json")));
+    wiremock.register(get(urlEqualTo("/v1/teams/demo-team/notes/team-note-001"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("team-note-001.json")));
 
-    wiremock.register(
-        get(urlEqualTo("/v1/teams/demo-team/notes/note-not-found"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(aResponse().withStatus(404)));
+    wiremock.register(get(urlEqualTo("/v1/teams/demo-team/notes/note-not-found"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse().withStatus(404)));
 
-    wiremock.register(
-        get(urlEqualTo("/v1/teams/demo-team/notes/note-server-error"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(aResponse().withStatus(500)));
+    wiremock.register(get(urlEqualTo("/v1/teams/demo-team/notes/note-server-error"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse().withStatus(500)));
 
     // GET /v1/teams/{teamPath}/notes — list team notes
-    wiremock.register(
-        get(urlEqualTo("/v1/teams/demo-team/notes"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("team_notes_list_ok.json")));
+    wiremock.register(get(urlEqualTo("/v1/teams/demo-team/notes"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("team_notes_list_ok.json")));
 
     // POST /v1/teams/{teamPath}/notes — create team note
-    wiremock.register(
-        post(urlEqualTo("/v1/teams/demo-team/notes"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(201)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("created-team-note.json")));
+    wiremock.register(post(urlEqualTo("/v1/teams/demo-team/notes"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(201)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("created-team-note.json")));
 
     // PATCH /v1/teams/{teamPath}/notes/{noteId} — update team note
-    wiremock.register(
-        patch(urlEqualTo("/v1/teams/demo-team/notes/created-team-note-xyz789"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("updated-team-note.json")));
+    wiremock.register(patch(urlEqualTo("/v1/teams/demo-team/notes/created-team-note-xyz789"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("updated-team-note.json")));
 
     // DELETE /v1/teams/{teamPath}/notes/{noteId} — delete team note
-    wiremock.register(
-        delete(urlEqualTo("/v1/teams/demo-team/notes/created-team-note-xyz789"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(aResponse().withStatus(204)));
+    wiremock.register(delete(urlEqualTo("/v1/teams/demo-team/notes/created-team-note-xyz789"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse().withStatus(204)));
 
     // POST /v1/notes — create note
-    wiremock.register(
-        post(urlEqualTo("/v1/notes"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(201)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("created-note.json")));
+    wiremock.register(post(urlEqualTo("/v1/notes"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(201)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("created-note.json")));
 
     // PATCH /v1/notes/{noteId} — update note
-    wiremock.register(
-        patch(urlMatching("/v1/notes/.*"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("updated-note.json")));
+    wiremock.register(patch(urlMatching("/v1/notes/.*"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("updated-note.json")));
 
     // DELETE /v1/notes/{noteId} — delete note
-    wiremock.register(
-        delete(urlMatching("/v1/notes/.*"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(aResponse().withStatus(204)));
+    wiremock.register(delete(urlMatching("/v1/notes/.*"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse().withStatus(204)));
 
     // GET /v1/me — get current user
-    wiremock.register(
-        get(urlEqualTo("/v1/me"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("me_ok.json")));
+    wiremock.register(get(urlEqualTo("/v1/me"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("me_ok.json")));
 
     // GET /v1/history — get history
-    wiremock.register(
-        get(urlEqualTo("/v1/history"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .willReturn(
-                aResponse()
-                    .withStatus(200)
-                    .withHeader("Content-Type", "application/json")
-                    .withBodyFile("history_ok.json")));
+    wiremock.register(get(urlEqualTo("/v1/history"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .willReturn(aResponse()
+            .withStatus(200)
+            .withHeader("Content-Type", "application/json")
+            .withBodyFile("history_ok.json")));
   }
 
   @Test
@@ -206,10 +180,9 @@ class HackmdClientWireMockTest {
     assertEquals(NotePermissionRole.GUEST, first.readPermission());
     assertEquals(NotePermissionRole.SIGNED_IN, first.writePermission());
 
-    verify(
-        getRequestedFor(urlEqualTo("/v1/notes"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .withHeader("User-Agent", equalTo("hackmd-client-tests")));
+    verify(getRequestedFor(urlEqualTo("/v1/notes"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .withHeader("User-Agent", equalTo("hackmd-client-tests")));
   }
 
   @Test
@@ -226,10 +199,9 @@ class HackmdClientWireMockTest {
     assertEquals(NotePermissionRole.GUEST, first.readPermission());
     assertEquals(NotePermissionRole.SIGNED_IN, first.writePermission());
 
-    verify(
-        getRequestedFor(urlEqualTo("/v1/notes/demo-note-001"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .withHeader("User-Agent", equalTo("hackmd-client-tests")));
+    verify(getRequestedFor(urlEqualTo("/v1/notes/demo-note-001"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .withHeader("User-Agent", equalTo("hackmd-client-tests")));
   }
 
   @Test
@@ -238,10 +210,9 @@ class HackmdClientWireMockTest {
     var note = hackmdClient.getNote("note-not-found");
     assertTrue(note.isEmpty());
 
-    verify(
-        getRequestedFor(urlEqualTo("/v1/notes/note-not-found"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .withHeader("User-Agent", equalTo("hackmd-client-tests")));
+    verify(getRequestedFor(urlEqualTo("/v1/notes/note-not-found"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .withHeader("User-Agent", equalTo("hackmd-client-tests")));
   }
 
   // Teams API test example
@@ -254,10 +225,9 @@ class HackmdClientWireMockTest {
     var firstTeam = teams.get(0);
     assertEquals("e9ed1dcd-830f-435c-9fe2-d53d5f191666", firstTeam.id());
 
-    verify(
-        getRequestedFor(urlEqualTo("/v1/teams"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .withHeader("User-Agent", equalTo("hackmd-client-tests")));
+    verify(getRequestedFor(urlEqualTo("/v1/teams"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .withHeader("User-Agent", equalTo("hackmd-client-tests")));
   }
 
   @Test
@@ -279,10 +249,8 @@ class HackmdClientWireMockTest {
   @Test
   @DisplayName("server error on team note propagates as HackmdException")
   void getTeamNote_throwsHackmdException_onServerError() {
-    var ex =
-        assertThrows(
-            HackmdException.class,
-            () -> hackmdClient.getTeamNote("demo-team", "note-server-error"));
+    var ex = assertThrows(
+        HackmdException.class, () -> hackmdClient.getTeamNote("demo-team", "note-server-error"));
     assertEquals(500, ex.getStatusCode());
   }
 
@@ -298,34 +266,31 @@ class HackmdClientWireMockTest {
   @Test
   @DisplayName("createTeamNote returns the created team note")
   void createTeamNote_returns_created_note() {
-    var request =
-        new CreateNoteRequest(
-            "New Team Note",
-            "Team note initial content",
-            NotePermissionRole.SIGNED_IN,
-            NotePermissionRole.OWNER,
-            NoteCommentPermission.OWNERS,
-            null,
-            List.of("team", "test"));
+    var request = new CreateNoteRequest(
+        "New Team Note",
+        "Team note initial content",
+        NotePermissionRole.SIGNED_IN,
+        NotePermissionRole.OWNER,
+        NoteCommentPermission.OWNERS,
+        null,
+        List.of("team", "test"));
     Note created = hackmdClient.createTeamNote("demo-team", request);
     assertEquals("created-team-note-xyz789", created.id());
     assertEquals("New Team Note", created.title());
     assertEquals("Team note initial content", created.content());
-    verify(
-        postRequestedFor(urlEqualTo("/v1/teams/demo-team/notes"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .withRequestBody(matchingJsonPath("$.readPermission", equalTo("signed_in")))
-            .withRequestBody(matchingJsonPath("$.writePermission", equalTo("owner"))));
+    verify(postRequestedFor(urlEqualTo("/v1/teams/demo-team/notes"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .withRequestBody(matchingJsonPath("$.readPermission", equalTo("signed_in")))
+        .withRequestBody(matchingJsonPath("$.writePermission", equalTo("owner"))));
   }
 
   @Test
   @DisplayName("updateTeamNote returns the updated team note")
   void updateTeamNote_returns_updated_note() {
-    Note updated =
-        hackmdClient.updateTeamNote(
-            "demo-team",
-            "created-team-note-xyz789",
-            new UpdateNoteRequest(null, null, null, null, "Updated team note content"));
+    Note updated = hackmdClient.updateTeamNote(
+        "demo-team",
+        "created-team-note-xyz789",
+        new UpdateNoteRequest(null, null, null, null, "Updated team note content"));
     assertEquals("created-team-note-xyz789", updated.id());
     assertEquals("Updated team note content", updated.content());
   }
@@ -339,33 +304,29 @@ class HackmdClientWireMockTest {
   @Test
   @DisplayName("createNote returns the created note")
   void createNote_returns_created_note() {
-    var request =
-        new CreateNoteRequest(
-            "New Note",
-            "Initial content",
-            NotePermissionRole.OWNER,
-            NotePermissionRole.OWNER,
-            NoteCommentPermission.OWNERS,
-            null,
-            List.of("test"));
+    var request = new CreateNoteRequest(
+        "New Note",
+        "Initial content",
+        NotePermissionRole.OWNER,
+        NotePermissionRole.OWNER,
+        NoteCommentPermission.OWNERS,
+        null,
+        List.of("test"));
     Note created = hackmdClient.createNote(request);
     assertEquals("created-note-abc123", created.id());
     assertEquals("New Note", created.title());
     assertEquals("Initial content", created.content());
-    verify(
-        postRequestedFor(urlEqualTo("/v1/notes"))
-            .withHeader("Authorization", equalTo("Bearer test-token"))
-            .withRequestBody(matchingJsonPath("$.readPermission", equalTo("owner")))
-            .withRequestBody(matchingJsonPath("$.writePermission", equalTo("owner"))));
+    verify(postRequestedFor(urlEqualTo("/v1/notes"))
+        .withHeader("Authorization", equalTo("Bearer test-token"))
+        .withRequestBody(matchingJsonPath("$.readPermission", equalTo("owner")))
+        .withRequestBody(matchingJsonPath("$.writePermission", equalTo("owner"))));
   }
 
   @Test
   @DisplayName("updateNote returns the updated note")
   void updateNote_returns_updated_note() {
-    Note updated =
-        hackmdClient.updateNote(
-            "created-note-abc123",
-            new UpdateNoteRequest(null, null, null, null, "Updated content"));
+    Note updated = hackmdClient.updateNote(
+        "created-note-abc123", new UpdateNoteRequest(null, null, null, null, "Updated content"));
     assertEquals("created-note-abc123", updated.id());
     assertEquals("Updated content", updated.content());
   }
@@ -405,12 +366,10 @@ class HackmdClientWireMockTest {
   @Test
   @DisplayName("400 response propagates as HackmdException with status 400")
   void updateNote_throwsHackmdException_on400() {
-    var ex =
-        assertThrows(
-            HackmdException.class,
-            () ->
-                hackmdClient.updateNote(
-                    "note-bad-request", new UpdateNoteRequest(null, null, null, null, null)));
+    var ex = assertThrows(
+        HackmdException.class,
+        () -> hackmdClient.updateNote(
+            "note-bad-request", new UpdateNoteRequest(null, null, null, null, null)));
     assertEquals(400, ex.getStatusCode());
   }
 }
