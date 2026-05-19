@@ -2,8 +2,6 @@ package io.github.yuokada.hackmd.quarkus;
 
 import java.util.List;
 import java.util.Optional;
-import org.eclipse.microprofile.faulttolerance.Retry;
-import org.eclipse.microprofile.faulttolerance.Timeout;
 
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
@@ -16,106 +14,100 @@ import io.github.yuokada.hackmd.core.UserProfile;
 
 public class HackmdClientImpl implements HackmdClient {
 
-  private static final int FT_MAX_RETRIES = 3;
-  private static final long FT_DELAY_MS = 500;
-  private static final long FT_TIMEOUT_MS = 5000;
-
   private final HackmdRestClient restClient;
+  private final HackmdRetryExecutor retryExecutor;
 
-  public HackmdClientImpl(HackmdRestClient restClient) {
+  public HackmdClientImpl(HackmdRestClient restClient, HackmdClientConfig config) {
     this.restClient = restClient;
+    this.retryExecutor = new HackmdRetryExecutor(config);
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
-  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> listNotes() {
-    return restClient.listNotes();
+    return retryExecutor.run(true, restClient::listNotes);
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
-  @Timeout(FT_TIMEOUT_MS)
   @Override
   public Optional<Note> getNote(String noteId) {
-    try {
-      return Optional.ofNullable(restClient.getNote(noteId));
-    } catch (HackmdException e) {
-      if (e.getStatusCode() == 404) {
-        return Optional.empty();
+    return retryExecutor.run(true, () -> {
+      try {
+        return Optional.ofNullable(restClient.getNote(noteId));
+      } catch (HackmdException e) {
+        if (e.getStatusCode() == 404) {
+          return Optional.empty();
+        }
+        throw e;
       }
-      throw e;
-    }
+    });
   }
 
   @Override
   public Note createNote(CreateNoteRequest request) {
-    return restClient.createNote(request);
+    return retryExecutor.run(false, () -> restClient.createNote(request));
   }
 
   @Override
   public Note updateNote(String noteId, UpdateNoteRequest request) {
-    return restClient.updateNote(noteId, request);
+    return retryExecutor.run(false, () -> restClient.updateNote(noteId, request));
   }
 
   @Override
   public void deleteNote(String noteId) {
-    restClient.deleteNote(noteId);
+    retryExecutor.run(false, () -> {
+      restClient.deleteNote(noteId);
+      return null;
+    });
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
-  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<Team> listTeams() {
-    return restClient.listTeams();
+    return retryExecutor.run(true, restClient::listTeams);
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
-  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> listTeamNotes(String teamPath) {
-    return restClient.listTeamNotes(teamPath);
+    return retryExecutor.run(true, () -> restClient.listTeamNotes(teamPath));
   }
 
   @Override
   public Note createTeamNote(String teamPath, CreateNoteRequest request) {
-    return restClient.createTeamNote(teamPath, request);
+    return retryExecutor.run(false, () -> restClient.createTeamNote(teamPath, request));
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
-  @Timeout(FT_TIMEOUT_MS)
   @Override
   public Optional<Note> getTeamNote(String teamPath, String noteId) {
-    try {
-      return Optional.ofNullable(restClient.getTeamNote(teamPath, noteId));
-    } catch (HackmdException e) {
-      if (e.getStatusCode() == 404) {
-        return Optional.empty();
+    return retryExecutor.run(true, () -> {
+      try {
+        return Optional.ofNullable(restClient.getTeamNote(teamPath, noteId));
+      } catch (HackmdException e) {
+        if (e.getStatusCode() == 404) {
+          return Optional.empty();
+        }
+        throw e;
       }
-      throw e;
-    }
+    });
   }
 
   @Override
   public Note updateTeamNote(String teamPath, String noteId, UpdateNoteRequest request) {
-    return restClient.updateTeamNote(teamPath, noteId, request);
+    return retryExecutor.run(false, () -> restClient.updateTeamNote(teamPath, noteId, request));
   }
 
   @Override
   public void deleteTeamNote(String teamPath, String noteId) {
-    restClient.deleteTeamNote(teamPath, noteId);
+    retryExecutor.run(false, () -> {
+      restClient.deleteTeamNote(teamPath, noteId);
+      return null;
+    });
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
-  @Timeout(FT_TIMEOUT_MS)
   @Override
   public UserProfile getCurrentUser() {
-    return restClient.getCurrentUser();
+    return retryExecutor.run(true, restClient::getCurrentUser);
   }
 
-  @Retry(maxRetries = FT_MAX_RETRIES, delay = FT_DELAY_MS, abortOn = HackmdException.class)
-  @Timeout(FT_TIMEOUT_MS)
   @Override
   public List<NoteSummary> getHistory(Integer limit) {
-    return restClient.getHistory(limit);
+    return retryExecutor.run(true, () -> restClient.getHistory(limit));
   }
 }

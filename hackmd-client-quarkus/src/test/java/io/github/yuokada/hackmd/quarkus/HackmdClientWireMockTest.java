@@ -13,6 +13,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdClient;
 import io.github.yuokada.hackmd.core.HackmdException;
+import io.github.yuokada.hackmd.core.HackmdMetadataClient;
 import io.github.yuokada.hackmd.core.Note;
 import io.github.yuokada.hackmd.core.NoteCommentPermission;
 import io.github.yuokada.hackmd.core.NotePermissionRole;
@@ -45,6 +46,9 @@ class HackmdClientWireMockTest {
 
   @Inject
   HackmdClient hackmdClient;
+
+  @Inject
+  HackmdMetadataClient hackmdMetadataClient;
 
   WireMock wiremock;
 
@@ -183,6 +187,14 @@ class HackmdClientWireMockTest {
     verify(getRequestedFor(urlEqualTo("/v1/notes"))
         .withHeader("Authorization", equalTo("Bearer test-token"))
         .withHeader("User-Agent", equalTo("hackmd-client-tests")));
+  }
+
+  @Test
+  @DisplayName("metadata client exposes response headers")
+  void metadataClient_exposes_response_headers() {
+    var result = hackmdMetadataClient.listNotes();
+    assertFalse(result.value().isEmpty());
+    assertNotNull(result.metadata());
   }
 
   @Test

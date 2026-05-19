@@ -29,6 +29,7 @@ import io.github.yuokada.hackmd.core.UserProfile;
 @Path("/v1")
 @RegisterRestClient(configKey = "hackmd")
 @RegisterProvider(HackmdBearerAuthFilter.class)
+@RegisterProvider(HackmdResponseMetadataFilter.class)
 @RegisterProvider(HackmdErrorResponseMapper.class)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
