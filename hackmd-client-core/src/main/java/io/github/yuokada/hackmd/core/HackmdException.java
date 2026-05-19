@@ -1,6 +1,6 @@
 package io.github.yuokada.hackmd.core;
 
-/** Runtime exception thrown by HackmdClient implementations. */
+/** Base runtime exception for HackMD client modules. */
 public class HackmdException extends RuntimeException {
 
   private final int statusCode;
