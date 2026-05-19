@@ -20,8 +20,7 @@ public class HackmdErrorResponseMapper implements ResponseExceptionMapper<Hackmd
     var status = response.getStatus();
     var responseHeaders = toHeaderMap(response.getHeaders());
     var bodySnippet = extractBody(response);
-    var message =
-        new StringBuilder("HackMD API request failed: status=").append(status);
+    var message = new StringBuilder("HackMD API request failed: status=").append(status);
     if (bodySnippet != null && !bodySnippet.isBlank()) {
       message.append(", body=").append(bodySnippet);
     }

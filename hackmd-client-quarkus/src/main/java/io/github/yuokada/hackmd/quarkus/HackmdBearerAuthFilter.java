@@ -28,7 +28,8 @@ public class HackmdBearerAuthFilter implements ClientRequestFilter {
   @Override
   public void filter(ClientRequestContext requestContext) {
     var method = HackmdHttpMethod.valueOf(requestContext.getMethod());
-    var context = new HackmdRequestContext("quarkus-rest-client-call", requestContext.getUri().getPath(), method);
+    var context = new HackmdRequestContext(
+        "quarkus-rest-client-call", requestContext.getUri().getPath(), method);
     var token = credentialsProvider.token(context);
     requestContext.getHeaders().putSingle("Authorization", "Bearer " + token);
     requestContext.getHeaders().putSingle("User-Agent", config.userAgent());
