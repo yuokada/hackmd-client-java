@@ -2,6 +2,7 @@ package io.github.yuokada.hackmd.quarkus;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import io.github.yuokada.hackmd.core.CreateNoteRequest;
 import io.github.yuokada.hackmd.core.HackmdException;
@@ -26,13 +27,12 @@ public class HackmdMetadataClientImpl implements HackmdMetadataClient {
 
   @Override
   public HackmdResult<List<NoteSummary>> listNotes() {
-    var value = retryExecutor.run(true, restClient::listNotes);
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(() -> retryExecutor.run(true, restClient::listNotes));
   }
 
   @Override
   public HackmdResult<Optional<Note>> getNote(String noteId) {
-    Optional<Note> value = retryExecutor.run(true, () -> {
+    return withMetadata(() -> retryExecutor.run(true, () -> {
       try {
         return Optional.ofNullable(restClient.getNote(noteId));
       } catch (HackmdException e) {
@@ -41,52 +41,47 @@ public class HackmdMetadataClientImpl implements HackmdMetadataClient {
         }
         throw e;
       }
-    });
-    return new HackmdResult<>(value, metadata());
+    }));
   }
 
   @Override
   public HackmdResult<Note> createNote(CreateNoteRequest request) {
-    var value = retryExecutor.run(false, () -> restClient.createNote(request));
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(() -> retryExecutor.run(false, () -> restClient.createNote(request)));
   }
 
   @Override
   public HackmdResult<Note> updateNote(String noteId, UpdateNoteRequest request) {
-    var value = retryExecutor.run(false, () -> restClient.updateNote(noteId, request));
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(
+        () -> retryExecutor.run(false, () -> restClient.updateNote(noteId, request)));
   }
 
   @Override
   public HackmdResponseMetadata deleteNote(String noteId) {
-    retryExecutor.run(false, () -> {
+    return withMetadataOnly(() -> retryExecutor.run(false, () -> {
       restClient.deleteNote(noteId);
       return null;
-    });
-    return metadata();
+    }));
   }
 
   @Override
   public HackmdResult<List<Team>> listTeams() {
-    var value = retryExecutor.run(true, restClient::listTeams);
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(() -> retryExecutor.run(true, restClient::listTeams));
   }
 
   @Override
   public HackmdResult<List<NoteSummary>> listTeamNotes(String teamPath) {
-    var value = retryExecutor.run(true, () -> restClient.listTeamNotes(teamPath));
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(() -> retryExecutor.run(true, () -> restClient.listTeamNotes(teamPath)));
   }
 
   @Override
   public HackmdResult<Note> createTeamNote(String teamPath, CreateNoteRequest request) {
-    var value = retryExecutor.run(false, () -> restClient.createTeamNote(teamPath, request));
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(
+        () -> retryExecutor.run(false, () -> restClient.createTeamNote(teamPath, request)));
   }
 
   @Override
   public HackmdResult<Optional<Note>> getTeamNote(String teamPath, String noteId) {
-    Optional<Note> value = retryExecutor.run(true, () -> {
+    return withMetadata(() -> retryExecutor.run(true, () -> {
       try {
         return Optional.ofNullable(restClient.getTeamNote(teamPath, noteId));
       } catch (HackmdException e) {
@@ -95,40 +90,48 @@ public class HackmdMetadataClientImpl implements HackmdMetadataClient {
         }
         throw e;
       }
-    });
-    return new HackmdResult<>(value, metadata());
+    }));
   }
 
   @Override
   public HackmdResult<Note> updateTeamNote(
       String teamPath, String noteId, UpdateNoteRequest request) {
-    var value =
-        retryExecutor.run(false, () -> restClient.updateTeamNote(teamPath, noteId, request));
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(
+        () -> retryExecutor.run(false, () -> restClient.updateTeamNote(teamPath, noteId, request)));
   }
 
   @Override
   public HackmdResponseMetadata deleteTeamNote(String teamPath, String noteId) {
-    retryExecutor.run(false, () -> {
+    return withMetadataOnly(() -> retryExecutor.run(false, () -> {
       restClient.deleteTeamNote(teamPath, noteId);
       return null;
-    });
-    return metadata();
+    }));
   }
 
   @Override
   public HackmdResult<UserProfile> getCurrentUser() {
-    var value = retryExecutor.run(true, restClient::getCurrentUser);
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(() -> retryExecutor.run(true, restClient::getCurrentUser));
   }
 
   @Override
   public HackmdResult<List<NoteSummary>> getHistory(Integer limit) {
-    var value = retryExecutor.run(true, () -> restClient.getHistory(limit));
-    return new HackmdResult<>(value, metadata());
+    return withMetadata(() -> retryExecutor.run(true, () -> restClient.getHistory(limit)));
   }
 
-  private HackmdResponseMetadata metadata() {
-    return HackmdResponseMetadataFilter.consume();
+  private <T> HackmdResult<T> withMetadata(Supplier<T> supplier) {
+    try {
+      return new HackmdResult<>(supplier.get(), HackmdResponseMetadataFilter.consume());
+    } finally {
+      HackmdResponseMetadataFilter.consume();
+    }
+  }
+
+  private HackmdResponseMetadata withMetadataOnly(Supplier<Void> action) {
+    try {
+      action.get();
+      return HackmdResponseMetadataFilter.consume();
+    } finally {
+      HackmdResponseMetadataFilter.consume();
+    }
   }
 }

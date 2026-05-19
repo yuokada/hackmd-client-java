@@ -1,8 +1,12 @@
 package io.github.yuokada.hackmd.quarkus;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
+import jakarta.ws.rs.ProcessingException;
 
 import io.github.yuokada.hackmd.core.HackmdApiException;
 import io.github.yuokada.hackmd.core.HackmdException;
@@ -33,7 +37,7 @@ public class HackmdRetryExecutor {
         sleep(resolveDelayMillis(delayMillis, attempt, ex.getResponseHeaders()));
       } catch (HackmdException ex) {
         throw ex;
-      } catch (RuntimeException ex) {
+      } catch (ProcessingException ex) {
         if (attempt >= maxRetries) {
           throw ex;
         }
@@ -50,10 +54,24 @@ public class HackmdRetryExecutor {
       try {
         return Math.max(1L, Long.parseLong(retryAfter) * 1000L);
       } catch (NumberFormatException ignored) {
-        // Ignore non-numeric Retry-After for now.
+        var parsed = parseHttpDateRetryAfter(retryAfter);
+        if (parsed != null) {
+          return parsed;
+        }
       }
     }
     return applyJitter(baseDelayMillis << Math.min(attempt, 8));
+  }
+
+  private static Long parseHttpDateRetryAfter(String retryAfter) {
+    try {
+      var retryInstant =
+          ZonedDateTime.parse(retryAfter, DateTimeFormatter.RFC_1123_DATE_TIME).toInstant();
+      var millis = retryInstant.toEpochMilli() - Instant.now().toEpochMilli();
+      return Math.max(1L, millis);
+    } catch (RuntimeException ignored) {
+      return null;
+    }
   }
 
   private static String findHeader(java.util.Map<String, List<String>> headers, String name) {

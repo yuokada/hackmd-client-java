@@ -13,6 +13,8 @@ import io.github.yuokada.hackmd.core.HackmdResponseMetadata;
 @Provider
 public class HackmdResponseMetadataFilter implements ClientResponseFilter {
 
+  // NOTE: This relies on request/response processing on the same thread.
+  // Current usage is for blocking client flows.
   private static final ThreadLocal<HackmdResponseMetadata> LAST_METADATA = new ThreadLocal<>();
 
   @Override
