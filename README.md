@@ -44,20 +44,30 @@ hackmd.token=REPLACE_ME
 
 # Optional
 hackmd.user-agent=my-app/1.0
+
+# Optional SDK retry (defaults shown)
+hackmd.retry-enabled=false
+hackmd.retry-max-retries=3
+hackmd.retry-delay-millis=500
 ```
 
 ### 3) Inject and call
 
 ```java
 import io.github.yuokada.hackmd.core.HackmdClient;
+import io.github.yuokada.hackmd.core.HackmdMetadataClient;
 import jakarta.inject.Inject;
 
 class MyService {
   @Inject HackmdClient hackmdClient;
+  @Inject HackmdMetadataClient hackmdMetadataClient;
 
   void run() {
     var notes = hackmdClient.listNotes();
     System.out.println(notes.size());
+
+    var result = hackmdMetadataClient.listNotes();
+    System.out.println(result.metadata().requestId());
   }
 }
 ```
