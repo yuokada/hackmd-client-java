@@ -1,6 +1,10 @@
 ---
-name-template: 'v$RESOLVED_VERSION'
-tag-template: 'v$RESOLVED_VERSION'
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+tag-prefix: "v"
+change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+change-title-escapes: '\<*_&'
+
 categories:
   - title: '🔥 Breaking Changes'
     labels:
@@ -27,28 +31,47 @@ categories:
       - 'sbt-plugin-update'
   - title: '📚 Docs'
     labels:
-      - 'doc'
-change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+      - 'documentation'
+
+autolabeler:
+  - label: "documentation"
+    files:
+      - "README.md"
+      - "docs/**"
+      - ".github/instructions/**"
+  - label: "dependencies"
+    files:
+      - "pom.xml"
+      - "**/pom.xml"
+      - ".github/dependabot.yaml"
+  - label: "ci"
+    files:
+      - ".github/workflows/**"
+      - ".github/scripts/**"
+  - label: "test"
+    files:
+      - "**/src/test/**"
+      - "integration-tests/**"
+  - label: "feature"
+    branch:
+      - "/feature\\/.+/"
+    title:
+      - "/^feat/i"
+      - "/^feature/i"
+  - label: "bug"
+    branch:
+      - "/fix\\/.+/"
+    title:
+      - "/^fix/i"
+      - "/^bug/i"
+  - label: "chore"
+    branch:
+      - "/chore\\/.+/"
+    title:
+      - "/^chore/i"
 
 template: |
   ## What's Changed
   $CHANGES
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 
-autolabeler:
-  - label: 'doc'
-    files:
-      - '*.md'
-      - 'openapi.yaml'
-  - label: 'feature'
-    title:
-      - '/(support|add)/i'
-  - label: 'bug'
-    title:
-      - '/fix/i'
-  - label: 'internal'
-    title:
-      - '/internal/i'
-  - label: 'deprecation'
-    title:
-      - '/deprecate/i'
