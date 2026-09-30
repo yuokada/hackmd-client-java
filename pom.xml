@@ -54,8 +54,8 @@
 
     <quarkus-wiremock.version>1.6.3</quarkus-wiremock.version>
 
-    <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
-    <maven.failsafe.plugin.version>3.5.6</maven.failsafe.plugin.version>
+    <maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
+    <maven.failsafe.plugin.version>3.6.0</maven.failsafe.plugin.version>
     <versions-plugin.version>2.21.0</versions-plugin.version>
     <source-plugin.version>3.4.0</source-plugin.version>
     <gpg-plugin.version>3.2.8</gpg-plugin.version>
@@ -88,7 +88,7 @@
       <plugins>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.15.0</version>
+          <version>3.16.0</version>
           <configuration>
             <release>${maven.compiler.release}</release>
           </configuration>
