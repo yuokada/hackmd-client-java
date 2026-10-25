@@ -10,6 +10,9 @@ updates:
       timezone: "Asia/Tokyo"
     commit-message:
       prefix: "deps"
+    cooldown:
+      default-days: 5
+      # semver-major-days: 30
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
